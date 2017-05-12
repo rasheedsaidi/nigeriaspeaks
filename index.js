@@ -288,8 +288,6 @@ function receivedMessage(event) {
 
   var nodeIndex = -1;
 
-  sendTypingOn(senderID);
-
   console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {    
     //sendTextMessage(senderID, "You must be logged in to send report.");
@@ -298,6 +296,8 @@ function receivedMessage(event) {
       promptLogin(senderID); return;
     }, 3000); */
   }
+
+  sendTypingOn(senderID);
 
   if (isEcho) {
     // Just logging message echoes to console
