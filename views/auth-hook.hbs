@@ -12,7 +12,7 @@
             var providerData = user.providerData;
             user.getToken().then(function(accessToken) {
               document.getElementById('uid').value = uid;
-              document.getElementById('sign-in-status').value = 'Signed in as ' + displayName;
+              document.getElementById('sign-in-status').innerHTML = 'Signed in as ' + displayName;
             });
           } else {
             // User is signed out.
@@ -59,10 +59,10 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
           <h1 class="text-center">Report2HQ</h1>
-        <form action="https://report2hq.herokuapp.com/auth-hook">
+        <form id="auth_form" method="post" action="https://report2hq.herokuapp.com/auth-hook">
             
             <div class="form-group">
-              <button type="button" class="btn btn-info" id="sign-in-status"></button>
+              <div class="well text-center" class="info" id="sign-in-status"></div>
             </div>
             <div class="form-group">
               <input type="hidden" name="supported" id="supported" value="">
@@ -77,3 +77,20 @@
     </div>
 
     </div>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#auth_form').click( function(e) { console.log($('#auth_form').attr('action'))
+          e.preventDefault();
+          $.ajax({
+              url: $('#auth_form').attr('action'),
+              type: 'post',
+              dataType: 'json',
+              data: $('#auth_form').serialize(),
+              success: function(data) {
+                window.close();
+              }
+          });
+      });
+      })
+    </script>

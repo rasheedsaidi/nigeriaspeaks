@@ -94,15 +94,15 @@ app.get('/policy', function(req, res) {
 });
 
 app.get('/auth', function(req, res) {  
-    res.render('auth', {layout: '../layouts/auth.hbs'});  
+    res.render('auth', {layout:  __dirname + '/views/layouts/auth.hbs'});  
 });
 
-app.get('/reports', function(req, res) {  
+app.get('/reports', function(req, res) {
     res.render('reports');  
 });
 
 app.get('/auth-hook', function(req, res) {
-    res.render('auth-hook', '../layouts/auth.hbs');
+    res.render('auth-hook',  {layout: __dirname + '/views/layouts/auth.hbs'});
 });
 
 app.post('/auth-hook', function(req, res) {
