@@ -291,9 +291,11 @@ function receivedMessage(event) {
   sendTypingOn(senderID);
 
   console.log('SessionID: ' + SESSION_ID);
-  if(!SESSION_ID) {
-    sendTextMessage(senderID, "You must be logged in to send report. Please type 'login'.");
-    return;
+  if(!SESSION_ID) {    
+    sendTextMessage(senderID, "You must be logged in to send report.");
+    setTimeout(function() {
+      promptLogin(senderID); return;
+    }, 3000);
   }
 
   if (isEcho) {
@@ -547,6 +549,14 @@ function receivedPostback(event) {
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
 
+  console.log('SessionID: ' + SESSION_ID);
+  if(!SESSION_ID) {    
+    sendTextMessage(senderID, "You must be logged in to send report.");
+    setTimeout(function() {
+      promptLogin(senderID); return;
+    }, 3000);
+  }
+
   sendTypingOn(senderID);
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
@@ -573,7 +583,33 @@ function receivedPostback(event) {
   processMenuPostback(senderID, payload);
   return;
 }
-  
+
+
+function promptLogin(senderID) {
+  var messageData = {
+    recipient: {
+      id: senderID
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          'text' : "Click to login",
+          buttons: [{
+              "type":"web_url",
+              "url": SERVER_URL + "/auth?psid=" + senderID,
+              "title":"Login",
+              "webview_height_ratio": "compact",
+              "messenger_extensions": true,  
+              "fallback_url": SERVER_URL + "/auth?psid=" + senderID
+          }]
+        }
+      }
+    }
+  }
+  callSendAPI(messageData);
+}  
 
   // When a postback is called, we'll send a message back to the sender to 
   // let them know it was successful
