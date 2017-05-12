@@ -290,6 +290,7 @@ function receivedMessage(event) {
 
   sendTypingOn(senderID);
 
+  console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {
     sendTextMessage(senderID, "You must be logged in to send report. Please type 'login'.");
     return;
