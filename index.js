@@ -21,7 +21,7 @@ const
   https = require('https'),  
   request = require('request'),
   hbs = require('express-handlebars'),
-  var session = require('client-sessions');
+  session = require('client-sessions');
   
 var firebase = require('./firebase');
 var app = express();
