@@ -552,10 +552,8 @@ function receivedPostback(event) {
 
   console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {    
-    sendTextMessage(senderID, "You must be logged in to send report.");
-    setTimeout(function() {
-      promptLogin(senderID); return;
-    }, 3000);
+    //sendTextMessage(senderID, "You must be logged in to send report.");
+    promptLogin(senderID); return;
   }
 
   sendTypingOn(senderID);
@@ -601,7 +599,7 @@ function promptLogin(senderID) {
               "type":"web_url",
               "url": SERVER_URL + "/auth?psid=" + senderID,
               "title":"Login",
-              "webview_height_ratio": "compact",
+              "webview_height_ratio": "full",
               "messenger_extensions": true,  
               "fallback_url": SERVER_URL + "/auth?psid=" + senderID
           }]
