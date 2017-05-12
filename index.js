@@ -292,10 +292,11 @@ function receivedMessage(event) {
 
   console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {    
-    sendTextMessage(senderID, "You must be logged in to send report.");
-    setTimeout(function() {
+    //sendTextMessage(senderID, "You must be logged in to send report.");
+    promptLogin(senderID); return;
+    /*setTimeout(function() {
       promptLogin(senderID); return;
-    }, 3000);
+    }, 3000); */
   }
 
   if (isEcho) {
