@@ -1,0 +1,79 @@
+<div class="container">
+    <script type="text/javascript">
+      initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+              document.getElementById('uid').value = uid;
+              document.getElementById('sign-in-status').value = 'Signed in as ' + displayName;
+            });
+          } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').value = 'Signed out';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'Messenger'));
+
+      window.extAsyncInit = function() {
+            var isSupported = MessengerExtensions.isInExtension();
+            
+            
+        // the Messenger Extensions JS SDK is done loading 
+            MessengerExtensions.getUserID(function success(uids) {
+            // User ID was successfully obtained. 
+                var psid = uids.psid;
+                document.getElementById('puid').value = psid;
+                document.getElementById('supported').value = 1;
+        
+            }, function error(err, errorMessage) {      
+            // Error handling code
+            document.getElementById('puid').value = "";
+            document.getElementById('supported').value = 0;
+            console.log(errorMessage);//$("#psid").val(errorMessage);
+            console.log(err);
+            }); 
+        
+        };
+    </script>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+          <h1 class="text-center">Report2HQ</h1>
+        <form action="https://report2hq.herokuapp.com/auth-hook">
+            
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="sign-in-status"></button>
+            </div>
+            <div class="form-group">
+              <input type="hidden" name="supported" id="supported" value="">
+              <input type="hidden" name="uid" id="uid" value="">
+              <input type="hidden" name="psid" id="psid" value="">
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Close window" class="btn btn-block btn-success">
+            </div>
+        </form>
+      </div>
+    </div>
+
+    </div>

@@ -29,6 +29,12 @@ app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __di
 app.set('view engine', 'hbs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
+app.use(session({
+  cookieName: 'session',
+  secret: 'hfsd&64^&(&$$OHFHKH579343-+gd',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -36,18 +42,19 @@ app.use(express.static('public'));
  *
  */
 
+const SESSION_ID = null;
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.ERS_APP_SECRET) ? process.env.ERS_APP_SECRET : "7254d77723982b8381b9201e2b383bfe";
+const APP_SECRET = (process.env.ERS_APP_SECRET) ? process.env.ERS_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
 
 // Arbitrary value used to validate a webhook
 const VALIDATION_TOKEN = (process.env.ERS_VALIDATION_TOKEN) ? (process.env.ERS_VALIDATION_TOKEN) : "report2hq-secret";
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.ERS_PAGE_ACCESS_TOKEN) ? (process.env.ERS_PAGE_ACCESS_TOKEN) : "EAAactaZCiYZBABAJxOHZCRMyhTbZA2bUOnIcBj2hKIBSYQlCDbMcZCo8Eh53tvY15yixOz9gjkWAfM32qZAxe5B5e9xfGif12FEc1i1pfSpFcYPZBqZCSUWrIPu51jpxOofYnkYKDNpQWsykgqNOSthpilR3ZBE6ZByQWLFdYTYjT8EwZDZD";
+const PAGE_ACCESS_TOKEN = (process.env.ERS_PAGE_ACCESS_TOKEN) ? (process.env.ERS_PAGE_ACCESS_TOKEN) : "EAAgRk9WtLY0BAHo0PZCangcdT0kTJDdpUcDqGBxyP3vpOxvc6LvVbs6vxBhzUzgHfGbxCzfx7JiNuhS081yzWHpYMt2mUpgzUo1YgZBZBdxkED2wZCM3ZCP829SytenI7FZBLvvZA8TVkh0W0IOdLAt0u9K9cenyxAuvlzWwBbjBwZDZD";
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-const SERVER_URL = (process.env.ERS_SERVER_URL) ? (process.env.ERS_SERVER_URL) : "https://emergency-reporting-system.herokuapp.com";
+const SERVER_URL = (process.env.ERS_SERVER_URL) ? (process.env.ERS_SERVER_URL) : "https://report2hq.herokuapp.com";
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
@@ -93,6 +100,17 @@ app.get('/reports', function(req, res) {
     res.render('reports');  
 });
 
+app.get('/auth-hook', function(req, res) {
+    res.render('auth-hook', '../layouts/auth.hbs');
+});
+
+app.post('/auth-hook', function(req, res) {
+    if(req.body && req.body.uid) {
+      req.session.uid = req.body.uid;
+    }
+    res.end();
+});
+
 app.get('/tos', function(req, res) {
   
     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
@@ -111,6 +129,7 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
+  var SESSION_ID = req.session.uid; 
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
@@ -269,6 +288,11 @@ function receivedMessage(event) {
   var nodeIndex = -1;
 
   sendTypingOn(senderID);
+
+  if(!SESSION_ID) {
+    sendTextMessage(senderID, "You must be logged in to send report. Please type 'login'.");
+    return;
+  }
 
   if (isEcho) {
     // Just logging message echoes to console
