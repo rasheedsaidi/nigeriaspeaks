@@ -45,17 +45,17 @@ app.use(session({
 
 const SESSION_ID = null;
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.ERS_APP_SECRET) ? process.env.ERS_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
+const APP_SECRET = (process.env.R2HQ_APP_SECRET) ? process.env.R2HQ_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.ERS_VALIDATION_TOKEN) ? (process.env.ERS_VALIDATION_TOKEN) : "report2hq-secret";
+const VALIDATION_TOKEN = (process.env.R2HQ_VALIDATION_TOKEN) ? (process.env.R2HQ_VALIDATION_TOKEN) : "report2hq-secret";
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.ERS_PAGE_ACCESS_TOKEN) ? (process.env.ERS_PAGE_ACCESS_TOKEN) : "EAAgRk9WtLY0BAHo0PZCangcdT0kTJDdpUcDqGBxyP3vpOxvc6LvVbs6vxBhzUzgHfGbxCzfx7JiNuhS081yzWHpYMt2mUpgzUo1YgZBZBdxkED2wZCM3ZCP829SytenI7FZBLvvZA8TVkh0W0IOdLAt0u9K9cenyxAuvlzWwBbjBwZDZD";
+const PAGE_ACCESS_TOKEN = (process.env.R2HQ_PAGE_ACCESS_TOKEN) ? (process.env.R2HQ_PAGE_ACCESS_TOKEN) : "EAAgRk9WtLY0BAHo0PZCangcdT0kTJDdpUcDqGBxyP3vpOxvc6LvVbs6vxBhzUzgHfGbxCzfx7JiNuhS081yzWHpYMt2mUpgzUo1YgZBZBdxkED2wZCM3ZCP829SytenI7FZBLvvZA8TVkh0W0IOdLAt0u9K9cenyxAuvlzWwBbjBwZDZD";
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-const SERVER_URL = (process.env.ERS_SERVER_URL) ? (process.env.ERS_SERVER_URL) : "https://report2hq.herokuapp.com";
+const SERVER_URL = (process.env.R2HQ_SERVER_URL) ? (process.env.R2HQ_SERVER_URL) : "https://report2hq.herokuapp.com";
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
