@@ -19,7 +19,8 @@ const
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),  
-  request = require('request');
+  request = require('request'),
+  hbs = require('express-handlebars');
   
 var firebase = require('./firebase');
 var app = express();
@@ -39,7 +40,7 @@ app.use(express.static('public'));
 const APP_SECRET = (process.env.ERS_APP_SECRET) ? process.env.ERS_APP_SECRET : "7254d77723982b8381b9201e2b383bfe";
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.ERS_VALIDATION_TOKEN) ? (process.env.ERS_VALIDATION_TOKEN) : "emergency-reporting-secret";
+const VALIDATION_TOKEN = (process.env.ERS_VALIDATION_TOKEN) ? (process.env.ERS_VALIDATION_TOKEN) : "report2hq-secret";
 
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKEN = (process.env.ERS_PAGE_ACCESS_TOKEN) ? (process.env.ERS_PAGE_ACCESS_TOKEN) : "EAAactaZCiYZBABAJxOHZCRMyhTbZA2bUOnIcBj2hKIBSYQlCDbMcZCo8Eh53tvY15yixOz9gjkWAfM32qZAxe5B5e9xfGif12FEc1i1pfSpFcYPZBqZCSUWrIPu51jpxOofYnkYKDNpQWsykgqNOSthpilR3ZBE6ZByQWLFdYTYjT8EwZDZD";
@@ -82,6 +83,14 @@ app.get('/policy', function(req, res) {
     res.write("ERS Policy page is under development");
     res.end();
   
+});
+
+app.get('/auth', function(req, res) {  
+    res.render('auth', {layout: '../layouts/auth.hbs'});  
+});
+
+app.get('/reports', function(req, res) {  
+    res.render('reports');  
 });
 
 app.get('/tos', function(req, res) {
