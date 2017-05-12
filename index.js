@@ -2070,28 +2070,16 @@ function promptReportType(senderID) {
       }
       var ar = [{
           "content_type": "text",
-          "title": "Traffic",
+          "title": "Low",
           "payload": "type-1"
       },{
           "content_type": "text",
-          "title": "Fire",
+          "title": "Medium",
           "payload": "type-2"
       },{
           "content_type": "text",
-          "title": "Robbery",
+          "title": "Urgenty",
           "payload": "type-3"
-      }, {
-          "content_type": "text",
-          "title": "Accident",
-          "payload": "type-4"
-      },{
-          "content_type": "text",
-          "title": "Health",
-          "payload": "type-5"
-      },{
-          "content_type": "text",
-          "title": "Social Abuse",
-          "payload": "type-6"
       },{
           "content_type": "text",
           "title": "Cancel",
