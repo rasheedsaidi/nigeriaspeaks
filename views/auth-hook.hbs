@@ -88,7 +88,7 @@
               type: 'post',
               dataType: 'json',
               data: $('#auth_form').serialize(),
-              success: function(data) {                
+              success: function(data) {  console.log(data);              
                 if(!data.error) {
                   console.log("Closing window");
                   window.location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
@@ -98,6 +98,7 @@
                 }
                 
               }, error: function(error) {
+                console.log(error)
                 alert('Error occured while processing your request. Please retry');
               }
           });
