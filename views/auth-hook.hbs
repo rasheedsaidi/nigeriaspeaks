@@ -57,7 +57,7 @@
         };
     </script>
     <div class="row">
-      <div class="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+      <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
           <h1 class="text-center">Report2HQ</h1>
         <form id="auth_form" method="post" action="https://report2hq.herokuapp.com/auth-hook">
             
@@ -84,7 +84,7 @@
           e.preventDefault();
           var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
           $.ajax({
-              url: 'localhost:5000/auth-hook',  //$('#auth_form').attr('action'), //
+              url: $('#auth_form').attr('action'), // 'localhost:5000/auth-hook',
               type: 'post',
               dataType: 'json',
               data: $('#auth_form').serialize(),
