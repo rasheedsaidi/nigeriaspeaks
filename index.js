@@ -142,6 +142,8 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
+  console.log(data);
+  res.sendStatus(200);
   
   SESSION_ID = req.session.uid; 
 
