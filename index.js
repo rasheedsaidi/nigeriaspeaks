@@ -628,7 +628,7 @@ function promptLogin(senderID) {
         type: "template",
         payload: {
           template_type: "button",
-          'text' : "",
+          'text' : "Click to login",
           buttons: [{
               "type":"web_url",
               "url": SERVER_URL + "/auth?psid=" + senderID,
