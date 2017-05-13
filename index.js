@@ -611,9 +611,10 @@ function receivedPostback(event) {
     return;
   } else {
 
-  //if(payload.indexOf("-") > 0)
-  processMenuPostback(senderID, payload);
-  return;
+	  //if(payload.indexOf("-") > 0)
+	  processMenuPostback(senderID, payload);
+	  return;
+	}
 }
 
 
