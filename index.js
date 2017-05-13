@@ -31,12 +31,7 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
-app.use(session({
-  cookieName: 'session',
-  secret: 'hfsd&64^&(&$$OHFHKH579343-+gd',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
-}));
+
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -108,7 +103,7 @@ app.get('/auth-hook', function(req, res) {
 
 app.post('/auth-hook', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
-    
+    console.log(req.body);
     if(req.body && req.body.uid) {
       req.session.uid = req.body.uid;
       var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
