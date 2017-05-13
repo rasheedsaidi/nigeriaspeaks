@@ -90,7 +90,7 @@ app.get('/policy', function(req, res) {
   
     //res.setEncoding('utf-8');
     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-    res.write("ERS Policy page is under development");
+    res.write("Report2HQ Policy page is under development");
     res.end();
   
 });
@@ -142,7 +142,7 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log(data);
+  
   SESSION_ID = req.session.uid; 
 
   // Make sure this is a page subscription
@@ -183,7 +183,11 @@ app.post('/webhook', function (req, res) {
     // You must send back a 200, within 20 seconds, to let us know you've 
     // successfully received the callback. Otherwise, the request will time out.
     res.sendStatus(200);
+  } else {
+    console.log(data);
+    res.sendStatus(200);
   }
+
 });
 
 /*
