@@ -30,7 +30,7 @@ app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __di
 app.set('view engine', 'hbs');
 //app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(bodyParser.urlencoded({extended: true}));
+//app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(session({
   cookieName: 'session',
@@ -142,6 +142,7 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
+  console.log(data);
   var SESSION_ID = req.session.uid; 
 
   // Make sure this is a page subscription
