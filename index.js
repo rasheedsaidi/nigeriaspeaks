@@ -551,7 +551,7 @@ function receivedDeliveryConfirmation(event) {
   console.log("All message before %d were delivered.", watermark);
 }
 
-function promptLogin(senderID) {
+function promptLogin1(senderID) {
   var messageData = {
     recipient: {
       id: senderID
@@ -618,7 +618,7 @@ function receivedPostback(event) {
 }
 
 
-function promptLogin1(senderID) {
+function promptLogin(senderID) {
   var messageData = {
     recipient: {
       id: senderID
@@ -628,7 +628,7 @@ function promptLogin1(senderID) {
         type: "template",
         payload: {
           template_type: "button",
-          'text' : "Click to login",
+          'text' : "",
           buttons: [{
               "type":"web_url",
               "url": SERVER_URL + "/auth?psid=" + senderID,
