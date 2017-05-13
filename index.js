@@ -142,8 +142,6 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log(data);
-  //res.sendStatus(200);
   
   SESSION_ID = req.session.uid; 
 
@@ -556,6 +554,25 @@ function receivedDeliveryConfirmation(event) {
   console.log("All message before %d were delivered.", watermark);
 }
 
+function promptLogin(senderID) {
+  var messageData = {
+    recipient: {
+      id: senderID
+    },
+    message: {      
+      'text' : "Click to login",
+      quick_replies: [{
+          "type":"web_url",
+          "url": SERVER_URL + "/auth?psid=" + senderID,
+          "title":"Login",
+          "webview_height_ratio": "full",
+          "messenger_extensions": true,  
+          "fallback_url": SERVER_URL + "/auth?psid=" + senderID
+      }]
+    }
+  }
+  callSendAPI(messageData);
+}  
 
 /*
  * Postback Event
@@ -627,31 +644,6 @@ function promptLogin1(senderID) {
     }
   }
   callSendAPI(messageData);
-}
-
-function promptLogin(senderID) {
-  var messageData = {
-    recipient: {
-      id: senderID
-    },
-    message: {      
-      'text' : "Click to login",
-      quick_replies: [{
-          "type":"web_url",
-          "url": SERVER_URL + "/auth?psid=" + senderID,
-          "title":"Login",
-          "webview_height_ratio": "full",
-          "messenger_extensions": true,  
-          "fallback_url": SERVER_URL + "/auth?psid=" + senderID
-      }]
-    }
-  }
-  callSendAPI(messageData);
-}  
-
-  // When a postback is called, we'll send a message back to the sender to 
-  // let them know it was successful
-  //sendTextMessage(senderID, "Postback called");
 }
 
 function processGreeting(senderID, payload) {
