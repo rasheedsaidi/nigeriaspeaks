@@ -83,12 +83,15 @@
         $('#auth_form').click( function(e) { console.log($('#auth_form').attr('action'))
           e.preventDefault();
           $.ajax({
-              url: $('#auth_form').attr('action'),
+              url: $('#auth_form').attr('action'), //localhost:5000/auth-hook,
               type: 'post',
               dataType: 'json',
               data: $('#auth_form').serialize(),
               success: function(data) {
-                window.close();
+                console.log(data)
+                //window.close();
+              }, error: function(error) {
+                console.log(error)
               }
           });
       });
