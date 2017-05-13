@@ -108,9 +108,9 @@ app.get('/auth-hook', function(req, res) {
 app.post('/auth-hook', function(req, res) {
     if(req.body && req.body.uid) {
       req.session.uid = req.body.uid;
-      res.send(req.body);
+      res.end(req.body.uid);
     }
-    res.end();
+    res.end(JSON.stringify(req.body));
 });
 
 app.get('/tos', function(req, res) {
