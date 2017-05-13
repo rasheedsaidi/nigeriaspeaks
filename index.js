@@ -28,6 +28,8 @@ var app = express();
 app.set('port', process.env.PORT || 5000);
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));
 app.set('view engine', 'hbs');
+//app.use(bodyParser.json({ verify: verifyRequestSignature }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 app.use(session({
@@ -106,11 +108,14 @@ app.get('/auth-hook', function(req, res) {
 });
 
 app.post('/auth-hook', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    
     if(req.body && req.body.uid) {
       req.session.uid = req.body.uid;
-      res.end(req.body.uid);
+      res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+    } else {
+      res.send(JSON.stringify({ error: true, uid: ''}));
     }
-    res.end(JSON.stringify(req.body));
 });
 
 app.get('/tos', function(req, res) {

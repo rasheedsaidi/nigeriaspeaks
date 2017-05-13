@@ -75,24 +75,30 @@
         </form>
       </div>
     </div>
-
+{{ resp }}
     </div>
 
     <script type="text/javascript">
       $(document).ready(function() {
         $('#auth_form').submit( function(e) { console.log($('#auth_form').serialize())
           e.preventDefault();
+          var = IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
           $.ajax({
-              url: $('#auth_form').attr('action'), //
+              url: 'http://localhost:5000/auth-hook', //$('#auth_form').attr('action'), //
               type: 'post',
               dataType: 'json',
               data: $('#auth_form').serialize(),
-              success: function(data, resp) {
-                console.log(data);
-                console.log(resp)
-                //window.close();
-              }, error: function(error, resp) {
-                console.log(resp)
+              success: function(data) {                
+                if(!data.error) {
+                  console.log("Closing window");
+                  window.location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
+                  window.close();
+                } else {
+                  alert('Error occured while processing your request. Please retry');
+                }
+                
+              }, error: function(error) {
+                alert('Error occured while processing your request. Please retry');
               }
           });
       });
