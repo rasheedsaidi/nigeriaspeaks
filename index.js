@@ -112,7 +112,13 @@ app.post('/auth-hook', function(req, res) {
     
     if(req.body && req.body.uid) {
       req.session.uid = req.body.uid;
-      res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+      var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
+      var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
+      //res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+      response.writeHead(302, {
+        'Location': 'location'
+      });
+      response.end();
     } else {
       res.send(JSON.stringify({ error: true, uid: ''}));
     }

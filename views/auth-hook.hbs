@@ -82,7 +82,7 @@
       $(document).ready(function() {
         $('#auth_form').submit( function(e) { console.log($('#auth_form').serialize())
           e.preventDefault();
-          var = IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
+          var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
           $.ajax({
               url: 'http://localhost:5000/auth-hook', //$('#auth_form').attr('action'), //
               type: 'post',
