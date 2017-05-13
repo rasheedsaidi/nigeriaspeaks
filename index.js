@@ -116,7 +116,7 @@ app.post('/auth-hook', function(req, res) {
       var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
       //res.send(JSON.stringify({ error: false, uid: req.body.uid}));
       response.writeHead(302, {
-        'Location': 'location'
+        'Location': location
       });
       response.end();
     } else {
