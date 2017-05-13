@@ -45,7 +45,7 @@ app.use(session({
  *
  */
 
-const SESSION_ID = null;
+var SESSION_ID = null;
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.R2HQ_APP_SECRET) ? process.env.R2HQ_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
 
@@ -143,7 +143,7 @@ app.get('/tos', function(req, res) {
 app.post('/webhook', function (req, res) {
   var data = req.body;
   console.log(data);
-  res.sendStatus(200);
+  //res.sendStatus(200);
   
   SESSION_ID = req.session.uid; 
 
