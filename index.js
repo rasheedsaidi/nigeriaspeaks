@@ -603,7 +603,7 @@ function receivedPostback(event) {
 }
 
 
-function promptLogin(senderID) {
+function promptLogin1(senderID) {
   var messageData = {
     recipient: {
       id: senderID
@@ -624,6 +624,26 @@ function promptLogin(senderID) {
           }]
         }
       }
+    }
+  }
+  callSendAPI(messageData);
+}
+
+function promptLogin(senderID) {
+  var messageData = {
+    recipient: {
+      id: senderID
+    },
+    message: {      
+      'text' : "Click to login",
+      quick_replies: [{
+          "type":"web_url",
+          "url": SERVER_URL + "/auth?psid=" + senderID,
+          "title":"Login",
+          "webview_height_ratio": "full",
+          "messenger_extensions": true,  
+          "fallback_url": SERVER_URL + "/auth?psid=" + senderID
+      }]
     }
   }
   callSendAPI(messageData);
