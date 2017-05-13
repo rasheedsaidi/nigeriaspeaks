@@ -31,10 +31,10 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
-app.use(sessions({
+app.use(session({
   cookieName: 'session', // cookie name dictates the key name added to the request object 
   secret: '7459)^%($hfdhf^&%($$90-+', // should be a large unguessable string 
-  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms 
+  duration: 30 * 60 * 1000, // how long the session will stay valid in ms 
   activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds 
 }));
 
