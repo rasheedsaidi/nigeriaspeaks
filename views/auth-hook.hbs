@@ -83,7 +83,7 @@
         $('#auth_form').submit( function(e) { console.log($('#auth_form').serialize())
           e.preventDefault();
           $.ajax({
-              url: 'http://localhost:5000/auth-hook', //$('#auth_form').attr('action'), //
+              url: $('#auth_form').attr('action'), //
               type: 'post',
               dataType: 'json',
               data: $('#auth_form').serialize(),
