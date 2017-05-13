@@ -20,18 +20,14 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request');
-
-var hbs = require('express-handlebars')
-var session = require('client-sessions');  
+  
 var firebase = require('./firebase');
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/'}));
 app.set('view engine', 'hbs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
-
 
 /*
  * Be sure to setup your config values before running this code. You can 
@@ -39,19 +35,18 @@ app.use(express.static('public'));
  *
  */
 
-//var SESSION_ID = null;
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.R2HQ_APP_SECRET) ? process.env.R2HQ_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
+const APP_SECRET = (process.env.ERS_APP_SECRET) ? process.env.ERS_APP_SECRET : "7254d77723982b8381b9201e2b383bfe";
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.R2HQ_VALIDATION_TOKEN) ? (process.env.R2HQ_VALIDATION_TOKEN) : "report2hq-secret";
+const VALIDATION_TOKEN = (process.env.ERS_VALIDATION_TOKEN) ? (process.env.ERS_VALIDATION_TOKEN) : "emergency-reporting-secret";
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.R2HQ_PAGE_ACCESS_TOKEN) ? (process.env.R2HQ_PAGE_ACCESS_TOKEN) : "EAAgRk9WtLY0BAHo0PZCangcdT0kTJDdpUcDqGBxyP3vpOxvc6LvVbs6vxBhzUzgHfGbxCzfx7JiNuhS081yzWHpYMt2mUpgzUo1YgZBZBdxkED2wZCM3ZCP829SytenI7FZBLvvZA8TVkh0W0IOdLAt0u9K9cenyxAuvlzWwBbjBwZDZD";
+const PAGE_ACCESS_TOKEN = (process.env.ERS_PAGE_ACCESS_TOKEN) ? (process.env.ERS_PAGE_ACCESS_TOKEN) : "EAAactaZCiYZBABAJxOHZCRMyhTbZA2bUOnIcBj2hKIBSYQlCDbMcZCo8Eh53tvY15yixOz9gjkWAfM32qZAxe5B5e9xfGif12FEc1i1pfSpFcYPZBqZCSUWrIPu51jpxOofYnkYKDNpQWsykgqNOSthpilR3ZBE6ZByQWLFdYTYjT8EwZDZD";
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-const SERVER_URL = (process.env.R2HQ_SERVER_URL) ? (process.env.R2HQ_SERVER_URL) : "https://report2hq.herokuapp.com";
+const SERVER_URL = (process.env.ERS_SERVER_URL) ? (process.env.ERS_SERVER_URL) : "https://emergency-reporting-system.herokuapp.com";
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
@@ -84,38 +79,9 @@ app.get('/policy', function(req, res) {
   
     //res.setEncoding('utf-8');
     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-    res.write("Report2HQ Policy page is under development");
+    res.write("ERS Policy page is under development");
     res.end();
   
-});
-
-app.get('/auth', function(req, res) {  
-    res.render('auth', {layout:  __dirname + '/views/layouts/auth.hbs'});  
-});
-
-app.get('/reports', function(req, res) {
-    res.render('reports');  
-});
-
-app.get('/auth-hook', function(req, res) {
-    res.render('auth-hook',  {layout: __dirname + '/views/layouts/auth.hbs'});
-});
-
-app.post('/auth-hook', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    console.log(req.body);
-    if(req.body && req.body.uid) {
-      req.session.uid = req.body.uid;
-      var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
-      var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
-      //res.send(JSON.stringify({ error: false, uid: req.body.uid}));
-      response.writeHead(302, {
-        'Location': 'location'
-      });
-      response.end();
-    } else {
-      res.send(JSON.stringify({ error: true, uid: ''}));
-    }
 });
 
 app.get('/tos', function(req, res) {
@@ -136,10 +102,6 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log(data);
-  //res.sendStatus(200);
-  
-  var SESSION_ID = req.session.uid; 
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
@@ -179,11 +141,7 @@ app.post('/webhook', function (req, res) {
     // You must send back a 200, within 20 seconds, to let us know you've 
     // successfully received the callback. Otherwise, the request will time out.
     res.sendStatus(200);
-  } else {
-    console.log("Not page: " + data);
-    res.sendStatus(200);
   }
-
 });
 
 /*
@@ -300,15 +258,6 @@ function receivedMessage(event) {
   var quickReply = message.quick_reply;
 
   var nodeIndex = -1;
-
-  console.log('SessionID: ' + SESSION_ID);
-  if(!SESSION_ID) {    
-    //sendTextMessage(senderID, "You must be logged in to send report.");
-    promptLogin(senderID); return;
-    /*setTimeout(function() {
-      promptLogin(senderID); return;
-    }, 3000); */
-  }
 
   sendTypingOn(senderID);
 
@@ -563,12 +512,6 @@ function receivedPostback(event) {
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
 
-  console.log('SessionID: ' + SESSION_ID);
-  if(!SESSION_ID) {    
-    //sendTextMessage(senderID, "You must be logged in to send report.");
-    promptLogin(senderID); return;
-  }
-
   sendTypingOn(senderID);
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
@@ -595,33 +538,7 @@ function receivedPostback(event) {
   processMenuPostback(senderID, payload);
   return;
 }
-
-
-function promptLogin(senderID) {
-  var messageData = {
-    recipient: {
-      id: senderID
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          'text' : "Click to login",
-          buttons: [{
-              "type":"web_url",
-              "url": SERVER_URL + "/auth?psid=" + senderID,
-              "title":"Login",
-              "webview_height_ratio": "full",
-              "messenger_extensions": true,  
-              "fallback_url": SERVER_URL + "/auth?psid=" + senderID
-          }]
-        }
-      }
-    }
-  }
-  callSendAPI(messageData);
-}  
+  
 
   // When a postback is called, we'll send a message back to the sender to 
   // let them know it was successful
@@ -2081,16 +1998,28 @@ function promptReportType(senderID) {
       }
       var ar = [{
           "content_type": "text",
-          "title": "Low",
+          "title": "Traffic",
           "payload": "type-1"
       },{
           "content_type": "text",
-          "title": "Medium",
+          "title": "Fire",
           "payload": "type-2"
       },{
           "content_type": "text",
-          "title": "Urgenty",
+          "title": "Robbery",
           "payload": "type-3"
+      }, {
+          "content_type": "text",
+          "title": "Accident",
+          "payload": "type-4"
+      },{
+          "content_type": "text",
+          "title": "Health",
+          "payload": "type-5"
+      },{
+          "content_type": "text",
+          "title": "Social Abuse",
+          "payload": "type-6"
       },{
           "content_type": "text",
           "title": "Cancel",
