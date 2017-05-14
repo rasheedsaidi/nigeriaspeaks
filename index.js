@@ -323,8 +323,9 @@ function receivedMessage(event) {
 
   firebase.getUID(senderID, function(err, data) {
     console.log(data)
+    SESSION_ID = data.uid;
     setTimeout(function() {
-        SESSION_ID = data.uid;
+        
         if(!SESSION_ID) {    
           //sendTextMessage(senderID, "You must be logged in to send report.");
           promptLogin(senderID); return;
@@ -332,7 +333,7 @@ function receivedMessage(event) {
             promptLogin(senderID); return;
           }, 3000); */
         }
-      }, 2000);
+      }, 4000);
     
   });
   console.log('SessionID: ' + SESSION_ID);
