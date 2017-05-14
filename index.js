@@ -101,7 +101,7 @@ app.get('/policy', function(req, res) {
 });
 
 app.get('/auth', function(req, res) {  
-    req.session.uid = req.query['psid'];
+    req.session.psid = req.query['psid'];
     res.render('auth', {layout:  __dirname + '/views/layouts/auth.hbs'});  
 });
 
@@ -160,6 +160,7 @@ app.post('/webhook', function (req, res) {
   var data = req.body;
   
   SESSION_ID = req.session.uid;
+  
   console.log("SessionID: " + SESSION_ID);
   console.log(req.session);
 
@@ -320,6 +321,10 @@ function receivedMessage(event) {
 
   var nodeIndex = -1;
 
+  firebase.getUID(senderID, function(err, data) {
+    console.log(data)
+    SESSION_ID = data.uid;
+  });
   console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {    
     //sendTextMessage(senderID, "You must be logged in to send report.");
@@ -601,6 +606,10 @@ function receivedPostback(event) {
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
 
+  firebase.getUID(senderID, function(err, data) {
+    console.log(data)
+    SESSION_ID = data.uid;
+  });
   console.log('SessionID: ' + SESSION_ID);
   if(!SESSION_ID) {    
     //sendTextMessage(senderID, "You must be logged in to send report.");
