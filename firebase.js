@@ -216,6 +216,7 @@ exports.addNode = function(senderID, nodeID, location, text, callback) {
 
 exports.loginUser = function(senderID, uID, callback) {
 	//query firebase
+	console.log("Called gituserid: " + senderID + ": " + uID)
 	if(!senderID || !uID) {
 		return;
 	}
@@ -236,7 +237,7 @@ exports.loginUser = function(senderID, uID, callback) {
 
 exports.getUID = function(senderID, callback) {
 	//query firebase
-	console.log(senderID)
+	console.log("Called gituserid: " + senderID)
 	var reportRef = refMain.child('users/' + senderID);
 	try {
 		reportRef.once("value", function(data) {
