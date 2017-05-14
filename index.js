@@ -631,7 +631,7 @@ function receivedPostback(event) {
 }
 
 
-function promptLogin(senderID) {
+function promptLogin(senderID, message="Click to login") {
   var messageData = {
     recipient: {
       id: senderID
@@ -641,7 +641,7 @@ function promptLogin(senderID) {
         type: "template",
         payload: {
           template_type: "button",
-          'text' : "Click to login",
+          'text' : message,
           buttons: [{
               "type":"web_url",
               "url": SERVER_URL + "/auth?psid=" + senderID,
@@ -677,10 +677,10 @@ function processGreeting(senderID, payload) {
         var name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "To report an event or abuse, type 'new report' or click on the 'New Report' button in the menu.";
-      sendTextMessage(senderID, message);
+      var message = greeting + "Welcome to Report2HQ. Please login to start reporting.";
+      promptLogin(senderID, message);
       setTimeout(function() {
-        promptHelpList(senderID);
+        //promptHelpList(senderID);
       }, 2000);
     });
   } else{
