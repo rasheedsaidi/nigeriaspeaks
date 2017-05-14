@@ -213,6 +213,39 @@ exports.addNode = function(senderID, nodeID, location, text, callback) {
 	
 };
 
+exports.loginUser = function(senderID, uID, callback) {
+	//query firebase
+	if(!senderID || !uID) {
+		return;
+	}
+	
+	var reportRef = ref.child('users/' + senderID);
+	try {
+		reportRef.set({uid: uID}, function(error) {
+			if(error) {
+				return callback(null, true);
+			} else {
+				return callback(error, null);
+			}			
+		});	
+	} catch(error) {
+		return callback(error, null);
+	}	
+};
+
+exports.getUID = function(senderID, callback) {
+	//query firebase
+	var reportRef = ref.child('users/' + senderID);
+	try {
+		reportRef.once("value", function(data) {
+			return callback(null, data);
+		})	
+	} catch(error) {
+		return callback(error, null);
+	}
+	
+};
+
 exports.getTimestamp = function() {
 	return admin.database.ServerValue.TIMESTAMP; //firebase.database.ServerValue.TIMESTAMP
 }

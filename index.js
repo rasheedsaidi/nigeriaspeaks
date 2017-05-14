@@ -65,6 +65,11 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 app.get('/', function(req, res, next) {
+  /*var mv = require('mv');
+
+  mv(__dirname + '/public/js/vendor/foundation.js', __dirname + '/public/js/vendor/foundation1.js', function(err) {
+    console.log(err);
+  });*/
 
   var countries = ["Nigeria", "Ghana", "Togo", "Cameroon", "Kenya"];
   res.render('index', {title: "Choose Country", countries: countries});
@@ -103,7 +108,7 @@ app.get('/reports', function(req, res) {
     res.render('reports');  
 });
 
-app.get('/auth-hook', function(req, res) {
+app.get('/auth-hook', function(req, res) {    
     res.render('auth-hook',  {layout: __dirname + '/views/layouts/auth.hbs'});
 });
 
@@ -111,10 +116,16 @@ app.post('/auth-hook', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     console.log(req.body);
     if(req.body && req.body.uid) {
-      req.session.uid = req.body.uid;
+      var uid = req.body.uid;
+      var psid = req.session.psid;
+      req.session.uid = uid;
+      firebase.loginUser(psid, uid, function() {
+        sendTextMessage(psid, "You've successfully logged in.");
+      });
       var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
       var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
-      res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+      //res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+      res.send('<div class="row"><div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center>Login successful. Please this window</div></div>');
       /*response.writeHead(302, {
         'Location': location
       });
@@ -143,7 +154,9 @@ app.get('/tos', function(req, res) {
 app.post('/webhook', function (req, res) {
   var data = req.body;
   
-  SESSION_ID = req.session.uid; 
+  SESSION_ID = req.session.uid;
+  console.log("SessionID: " + SESSION_ID);
+  console.log("Session: " + req.session);
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
