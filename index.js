@@ -101,6 +101,7 @@ app.get('/policy', function(req, res) {
 });
 
 app.get('/auth', function(req, res) {  
+    req.session.uid = req.query['psid'];
     res.render('auth', {layout:  __dirname + '/views/layouts/auth.hbs'});  
 });
 
@@ -120,8 +121,11 @@ app.post('/auth-hook', function(req, res) {
       var psid = req.session.psid;
       req.session.uid = uid;
       console.log(req.session);
-      firebase.loginUser(psid, uid, function() {
-        sendTextMessage(psid, "You've successfully logged in.");
+      firebase.loginUser(psid, uid, function(err, data) {
+        if(!err) {
+          sendTextMessage(psid, "You've successfully logged in.");
+        }
+        
       });
       var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
       var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
