@@ -323,14 +323,17 @@ function receivedMessage(event) {
 
   firebase.getUID(senderID, function(err, data) {
     console.log(data)
-    SESSION_ID = data.uid;
-    if(!SESSION_ID) {    
-      //sendTextMessage(senderID, "You must be logged in to send report.");
-      promptLogin(senderID); return;
-      /*setTimeout(function() {
-        promptLogin(senderID); return;
-      }, 3000); */
-    }
+    setTimeout(function() {
+        SESSION_ID = data.uid;
+        if(!SESSION_ID) {    
+          //sendTextMessage(senderID, "You must be logged in to send report.");
+          promptLogin(senderID); return;
+          /*setTimeout(function() {
+            promptLogin(senderID); return;
+          }, 3000); */
+        }
+      }, 2000);
+    
   });
   console.log('SessionID: ' + SESSION_ID);
   
@@ -608,11 +611,12 @@ function receivedPostback(event) {
   var timeOfPostback = event.timestamp;
 
   firebase.getUID(senderID, function(err, data) {
-    console.log(data)
-    SESSION_ID = data.uid;
-    if(!SESSION_ID) {
-      promptLogin(senderID); return;
-    }
+    setTimeout(function() {
+        SESSION_ID = data.uid;
+        if(!SESSION_ID) {
+          promptLogin(senderID); return;
+        }
+      }, 2000);
   });  
 
   sendTypingOn(senderID);
@@ -2131,7 +2135,7 @@ function promptReportType(senderID) {
           "payload": "type-2"
       },{
           "content_type": "text",
-          "title": "Urgenty",
+          "title": "Urgent",
           "payload": "type-3"
       },{
           "content_type": "text",
