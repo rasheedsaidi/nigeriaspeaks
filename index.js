@@ -119,13 +119,14 @@ app.post('/auth-hook', function(req, res) {
       var uid = req.body.uid;
       var psid = req.session.psid;
       req.session.uid = uid;
+      console.log(req.session);
       firebase.loginUser(psid, uid, function() {
         sendTextMessage(psid, "You've successfully logged in.");
       });
       var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
       var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
-      //res.send(JSON.stringify({ error: false, uid: req.body.uid}));
-      res.send('<div class="row"><div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center>Login successful. Please this window</div></div>');
+      res.send(JSON.stringify({ error: false, uid: req.body.uid}));
+      //res.send('<div class="row"><div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center>Login successful. Please this window</div></div>');
       /*response.writeHead(302, {
         'Location': location
       });
@@ -156,7 +157,7 @@ app.post('/webhook', function (req, res) {
   
   SESSION_ID = req.session.uid;
   console.log("SessionID: " + SESSION_ID);
-  console.log("Session: " + req.session);
+  console.log(req.session);
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
