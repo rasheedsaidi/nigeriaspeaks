@@ -13,7 +13,8 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var ref = db.ref("ers/reports"); //ref.orderByChild("members/235642888").equalTo(235642888);
+var ref = db.ref("report2hq/reports"); //ref.orderByChild("members/235642888").equalTo(235642888);
+var refMain = db.ref("report2hq");
 
 exports.getStatus = function(senderID, callback) {
 	//query firebase
@@ -219,7 +220,7 @@ exports.loginUser = function(senderID, uID, callback) {
 		return;
 	}
 	
-	var reportRef = ref.child('users/' + senderID);
+	var reportRef = refMain.child('users/' + senderID);
 	try {
 		reportRef.set({uid: uID}, function(error) {
 			if(error) {
@@ -235,7 +236,8 @@ exports.loginUser = function(senderID, uID, callback) {
 
 exports.getUID = function(senderID, callback) {
 	//query firebase
-	var reportRef = ref.child('users/' + senderID);
+	console.log(senderID)
+	var reportRef = refMain.child('users/' + senderID);
 	try {
 		reportRef.once("value", function(data) {
 			return callback(null, data);
