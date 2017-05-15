@@ -324,7 +324,7 @@ function receivedMessage(event) {
   firebase.getUID(senderID, function(err, data) {
     console.log(data)
     SESSION_ID = data.uid;
-    setTimeout(function() {
+    //setTimeout(function() {
         console.log('SessionID: ' + SESSION_ID);
         
         if(!SESSION_ID) { 
@@ -416,7 +416,7 @@ function receivedMessage(event) {
   }
 
   }
-      }, 4000);
+      //}, 4000);
     
   });
   return;
