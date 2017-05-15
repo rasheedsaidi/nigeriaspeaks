@@ -317,12 +317,6 @@ function receivedMessage(event) {
   var nodeIndex = -1;
 console.log("data: ");
   firebase.getUID(senderID, function(err, data) {
-    console.log("data: ");
-    console.log(data);
-    if(err) {
-      console.log("err: ");
-    console.log(err);
-    }
     
     SESSION_ID = data.uid;
     //setTimeout(function() {
@@ -609,40 +603,41 @@ function receivedPostback(event) {
   var timeOfPostback = event.timestamp;
 
   firebase.getUID(senderID, function(err, data) {
-    setTimeout(function() {
-        SESSION_ID = data.uid;
-        if(!SESSION_ID) {
-          promptLogin(senderID); return;
-        }
-      }, 2000);
-  });  
+    
+    SESSION_ID = data.uid;
+    if(!SESSION_ID) {
+      promptLogin(senderID); return;
+    } else {
 
-  sendTypingOn(senderID);
-  console.log("Received postback for user %d and page %d with payload '%s' " + 
-    "at %d", senderID, recipientID, payload, timeOfPostback);
+    sendTypingOn(senderID);
+    console.log("Received postback for user %d and page %d with payload '%s' " + 
+      "at %d", senderID, recipientID, payload, timeOfPostback);
 
-  // The 'payload' param is a developer-defined field which is set in a postback 
-  // button for Structured Messages. 
-  var payload = event.postback.payload;  
+    // The 'payload' param is a developer-defined field which is set in a postback 
+    // button for Structured Messages. 
+    var payload = event.postback.payload;  
 
-  if (payload === "Greeting") {
-    processGreeting(senderID, payload);
-    return;
-  } else if(payload == "report-new") {
-    processNewReport(senderID);
-    return;
-  } else if(payload == "help") {
-    promptHelpList(senderID);
-    return;
-  } else if(payload == "report-find") {
-    promptRecentReports(senderID);
-    return;
-  } else {
+    if (payload === "Greeting") {
+      processGreeting(senderID, payload);
+      return;
+    } else if(payload == "report-new") {
+      processNewReport(senderID);
+      return;
+    } else if(payload == "help") {
+      promptHelpList(senderID);
+      return;
+    } else if(payload == "report-find") {
+      promptRecentReports(senderID);
+      return;
+    } else {
 
-	  //if(payload.indexOf("-") > 0)
-	  processMenuPostback(senderID, payload);
-	  return;
-	}
+      //if(payload.indexOf("-") > 0)
+      processMenuPostback(senderID, payload);
+      return;
+    }
+  }
+      
+  });
 }
 
 
