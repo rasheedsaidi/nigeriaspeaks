@@ -319,7 +319,7 @@ console.log("data: ");
   firebase.getUID(senderID, function(err, data) {
     console.log("data: ");
     console.log(data);
-    if(error) {
+    if(err) {
       console.log("err: ");
     console.log(err);
     }

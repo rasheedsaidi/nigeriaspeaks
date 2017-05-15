@@ -241,7 +241,7 @@ exports.getUID = function(senderID, callback) {
 	var reportRef = refMain.child('users/' + senderID);
 	try {
 		reportRef.once("value", function(data) {
-			return callback(null, data);
+			return callback(null, data.val());
 		})	
 	} catch(error) {
 		return callback(error, null);
