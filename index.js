@@ -322,11 +322,12 @@ function receivedMessage(event) {
   var nodeIndex = -1;
 
   firebase.getUID(senderID, function(err, data) {
-    console.log(data)
+    console.log("data: ");
+    console.log(data);
     SESSION_ID = data.uid;
     //setTimeout(function() {
-        console.log('SessionID: ' + SESSION_ID);
-        
+        console.log('SessionID1: ' + SESSION_ID);
+    console.log("Received echo")    
         if(!SESSION_ID) { 
           promptLogin(senderID); return;         
         } else {        
