@@ -158,11 +158,6 @@ app.get('/tos', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  
-  SESSION_ID = req.session.uid;
-  
-  console.log("SessionID: " + SESSION_ID);
-  console.log(req.session);
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
@@ -320,10 +315,15 @@ function receivedMessage(event) {
   var quickReply = message.quick_reply;
 
   var nodeIndex = -1;
-
+console.log("data: ");
   firebase.getUID(senderID, function(err, data) {
     console.log("data: ");
     console.log(data);
+    if(error) {
+      console.log("err: ");
+    console.log(err);
+    }
+    
     SESSION_ID = data.uid;
     //setTimeout(function() {
         console.log('SessionID1: ' + SESSION_ID);
