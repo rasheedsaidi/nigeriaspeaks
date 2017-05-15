@@ -325,19 +325,11 @@ function receivedMessage(event) {
     console.log(data)
     SESSION_ID = data.uid;
     setTimeout(function() {
+        console.log('SessionID: ' + SESSION_ID);
         
-        if(!SESSION_ID) {    
-          //sendTextMessage(senderID, "You must be logged in to send report.");
-          promptLogin(senderID); return;
-          /*setTimeout(function() {
-            promptLogin(senderID); return;
-          }, 3000); */
-        }
-      }, 4000);
-    
-  });
-  console.log('SessionID: ' + SESSION_ID);
-  
+        if(!SESSION_ID) { 
+          promptLogin(senderID); return;         
+        } else {        
 
   sendTypingOn(senderID);
 
@@ -423,6 +415,10 @@ function receivedMessage(event) {
     return;
   }
 
+  }
+      }, 4000);
+    
+  });
   return;
 }
 
