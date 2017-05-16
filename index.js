@@ -318,7 +318,8 @@ function receivedMessage(event) {
 console.log("data: ");
   firebase.getUID(senderID, function(err, data) {
     
-    SESSION_ID = data.uid;
+    if(data)
+      SESSION_ID = data.uid;
     //setTimeout(function() {
         console.log('SessionID1: ' + SESSION_ID);
     console.log("Received echo")    
@@ -604,7 +605,8 @@ function receivedPostback(event) {
 
   firebase.getUID(senderID, function(err, data) {
     
-    SESSION_ID = data.uid;
+    if(data)
+      SESSION_ID = data.uid;
     if(!SESSION_ID) {
       promptLogin(senderID); return;
     } else {
