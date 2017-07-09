@@ -30,7 +30,10 @@ var getTypes = function() {
 	return types;
 }
 
-exports.getTypes = getTypes();
+exports.getTypes = function() {
+	var types = getTypes();
+	return types;
+}
 
 exports.getStatus = function(senderID, callback) {
 	//query firebase
