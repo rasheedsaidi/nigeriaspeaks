@@ -25,10 +25,12 @@ var db = admin.database();
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
-exports.getTypes = function() {
+var getTypes = function() {
 	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Events", "Social Abuse", "Others"];
 	return types;
 }
+
+exports.getTypes = getTypes();
 
 exports.getStatus = function(senderID, callback) {
 	//query firebase
