@@ -26,7 +26,7 @@ var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
 var getTypes = function() {
-	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Events", "Social Abuse", "Others"];
+	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Event", "Social Abuse", "Others"];
 	return types;
 }
 
