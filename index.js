@@ -2110,7 +2110,7 @@ function promptReportType(senderID) {
   firebase.setCurrentNodeIndex(senderID, index, function(error, res) {
     getCurrentNode(senderID, function(error, report) {
       var type = "";
-      var types = firease.getTypes();
+      var types = firebase.getTypes();
       if(!error && report) {
         type = (report.type && typeof(types[parseInt(report.type) - 1]) != "undefined")? "Report type: " + types[parseInt(report.type) - 1]: "";
       }
