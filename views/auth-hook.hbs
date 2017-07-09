@@ -59,7 +59,7 @@
     <div class="row">
       <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
           <h1 class="text-center">Report2HQ</h1>
-        <form id="auth_form" method="post" action="https://report2hq.herokuapp.com/auth-hook">
+        <form id="auth_form" method="post" action="https://nigeriaspeaks.herokuapp.com/auth-hook">
             
             <div class="form-group">
               <div class="well text-center" class="info" id="sign-in-status"></div>
@@ -82,7 +82,7 @@
       $(document).ready(function() {
         $('#auth_form').submit( function(e) { console.log($('#auth_form').serialize())
           e.preventDefault();
-          var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
+          var IMAGE_URL = 'https://nigeriaspeaks.herokuapp.com/images/ns.png';
           $.ajax({
               url: $('#auth_form').attr('action'), // 'localhost:5000/auth-hook',
               type: 'post',

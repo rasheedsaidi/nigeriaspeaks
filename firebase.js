@@ -1,8 +1,17 @@
+var path = require('path');
 var admin = require("firebase-admin");
+
+var serviceAccount = require(path.join(__dirname, 'bin', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://nigeriaspeaks-9a7b9.firebaseio.com"
+});
 
 //var serviceAccount = require("https://emergency-reporting-system.herokuapp.com/public/pemergency-reporting-firebase-adminsdk-rkh5c-d999d6ebe6.json");
 
 //credential: admin.credential.cert(serviceAccount),
+/*
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: "emergency-reporting",
@@ -10,11 +19,16 @@ admin.initializeApp({
     privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCUT3VsMbvpFKxe\n8ol1ttCz4ECTxhc9EC9ijUD0YsdphrjVTZj//jj9luxHka9q+yQ0Y9guk9rtFh8R\n0YpQrDe8JZlfRFz9benIp/KoYKZlAlQPYgdCH2Ddkdx4BrvFurWL1/26Kao/ArQ4\n09oaMU7gXUHXt0GGh5FkSp1Ij9VeGNyet6C97tpmdvsBmILS2YGAybbcltf68rxp\nzC0PbkJhrVmfAmfiBSMtFB7srGTVEO0NXGMozmC5wb1AnVsf24372tO6InD+kMZY\ndLYhkZIwZtJj20Ezb3WfQvZHKedVQvDJTmOrVCvsmykwiC8DP2vZ933SUz4CKE3C\nGDMIjb49AgMBAAECggEABWdvy+V0B2Ytcbg8sgFbUXKWZ8wMBLmWQG0NNNp0ka/L\nBFqzfIBy6yqYqXLxhWBpTU9mDSxuCb2InEmaVJ4x2bU1BXekO8fJgPo9qUz8Qyn2\njijwQsSJ7wjlk6oLJYVMIDBamnHyNiGPF5MAm3u4eAxt3cJbrN87uP/PA1naWHdZ\nP2VNNALCiV0MJIqxirfaH0gJqqKGYIEPvYw3MB0phYcVh2K4UKSOE6e154aHW8+u\n+z7eBriajS7/ywe68EWQXUjjTxh86yC4abgQSkj8nPlIL5fgAnxX7oSwF3yRQM31\ngLWsqNt1sKdZSctn9oWjiVc6Br+vhbBfV6JdJ9ohAQKBgQDDVymjFCxb3JcHZZ5o\nhNPrGXPSdzxu66czTmGjaHhSS9n7EMIpAsmwyX7Qb5lPqeoXS8DZluRx1rcgBMGh\neMRh0E5cQpBDfYasXR4V2azon/yLqQbrVtdLo85dcT/Gk1FGWR9RB8B+adQcOT5D\na1J1VZGik6fSu+NuoS50onj9DQKBgQDCXZRb3F0FmckQK1MSb1HTYz6igFkD9um9\nkjOSMW3UWl7VgBLS4Uhyy5e2V7i5JvddzdhKyxet8eIzh2FNl5l2elDMX5RR/oFc\nL5oprWJsCLUxn87NrPVitRBngPB7Fu7YdrRJQV3NqNSQfQDVhHUapYyEacvD5BUp\nvazEl+ZZ8QKBgQCE+iMoFyWTa3mM2Yqa0EGLfAoyrmT/hYCPFr61BPtT2rsLhP8H\n+BPhO2oO7snJR3xKW5FvDp95N5f2Pgaqq5HUnH+botyedSdm0wUWDtb8jVzYnjpN\nnxJ1NY/YYK3vun3LjAQbn1FVPSneBMH0F21M3vGDYU0P0kQjHaqIT8pZSQKBgQCs\nuwFXybSZf5vh1L7UyT1MwQwu2iVBkrMTF9Tg/TB/4XgaAOG5qx/5dNl04Ox3DxwS\nrxajEW4P1cCSzqM4k5t8YSNhHSfw3l8UD/HPTBkFrY9pdH4S5ryEZikX8szEdxL4\nKDX8TC0S0hFl/tE476gqcCk6m9LMWew81iWt6Nh74QKBgBtb8eZcZ1uesvZqoG3d\nqk7ciCdO5NgPBKEadpc5/nRJW3T4bykCaU8MtS9bvK5djtB+lSEMs5B1ePUoM9Q+\nJ1Az9VUoeZeRl/6yZ2rk08lPk+/XgBBGzLRdFcewotU1o+FwdkOUMKw+LyM6PqXR\nF9XLARmzLfyO/NjbC8qpSNLB\n-----END PRIVATE KEY-----\n"
   }),
   databaseURL: "https://emergency-reporting.firebaseio.com"
-});
+}); */
 
 var db = admin.database();
-var ref = db.ref("report2hq/reports"); //ref.orderByChild("members/235642888").equalTo(235642888);
-var refMain = db.ref("report2hq");
+var ref = db.ref("content/reports");
+var refMain = db.ref("content");
+
+exports.getTypes() {
+	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Events", "Social Abuse", "Others"];
+	return types;
+}
 
 exports.getStatus = function(senderID, callback) {
 	//query firebase
@@ -177,7 +191,7 @@ exports.getRecentReportID = function(senderID, callback) {
 			reports.forEach(function(childSnapshot) {
 				var val = childSnapshot.val();
 				var type = "n/a";
-				var types = ["Traffic", "Fire", "Robbery", "Accident", "Health", "Social Abuse"];
+				var types = this.getTypes();
 			    if(val.type) {
 			        type = (val.type && typeof(types[parseInt(val.type) - 1]) != "undefined")? types[parseInt(val.type) - 1]: "n/a";
 			    }

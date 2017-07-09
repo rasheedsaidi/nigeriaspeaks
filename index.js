@@ -47,17 +47,17 @@ app.use(session({
 
 var SESSION_ID = null;
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.R2HQ_APP_SECRET) ? process.env.R2HQ_APP_SECRET : "df1c577585d3d7a301f2870f74dd0c8c";
+const APP_SECRET = (process.env.NS_APP_SECRET) ? process.env.NS_APP_SECRET : "696c47493c1d4ab80ab6143d451944f8";
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.R2HQ_VALIDATION_TOKEN) ? (process.env.R2HQ_VALIDATION_TOKEN) : "report2hq-secret";
+const VALIDATION_TOKEN = (process.env.NS_VALIDATION_TOKEN) ? (process.env.NS_VALIDATION_TOKEN) : "nigeriaspeaks-secret";
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.R2HQ_PAGE_ACCESS_TOKEN) ? (process.env.R2HQ_PAGE_ACCESS_TOKEN) : "EAAgRk9WtLY0BAHo0PZCangcdT0kTJDdpUcDqGBxyP3vpOxvc6LvVbs6vxBhzUzgHfGbxCzfx7JiNuhS081yzWHpYMt2mUpgzUo1YgZBZBdxkED2wZCM3ZCP829SytenI7FZBLvvZA8TVkh0W0IOdLAt0u9K9cenyxAuvlzWwBbjBwZDZD";
+const PAGE_ACCESS_TOKEN = (process.env.NS_PAGE_ACCESS_TOKEN) ? (process.env.NS_PAGE_ACCESS_TOKEN) : "EAACfT2ZAsyzABAAi1oIT8ETkZCZBzolcqUqIgHCAcana0HABPhbHt8BNl4ZCduAhXt6TJZCFGgFcLVBFcOkXQbvzMlWDXZA9dy0mhLCSO8L73WihUWO163hPSKM1WCHmxaqth2OIv5RgZCh5t5hDQAZAXAQaSn16mJzw95gIUMtVvpWvRN5kcUvP";
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-const SERVER_URL = (process.env.R2HQ_SERVER_URL) ? (process.env.R2HQ_SERVER_URL) : "https://report2hq.herokuapp.com";
+const SERVER_URL = (process.env.NS_SERVER_URL) ? (process.env.NS_SERVER_URL) : "https://nigeriaspeaks.herokuapp.com";
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
@@ -65,12 +65,6 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 app.get('/', function(req, res, next) {
-  /*var mv = require('mv');
-
-  mv(__dirname + '/public/js/vendor/foundation.js', __dirname + '/public/js/vendor/foundation1.js', function(err) {
-    console.log(err);
-  });*/
-
   var countries = ["Nigeria", "Ghana", "Togo", "Cameroon", "Kenya"];
   res.render('index', {title: "Choose Country", countries: countries});
 });
@@ -88,14 +82,14 @@ app.get('/webhook', function(req, res) {
   } else {
     console.error("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);          
-  }  
+  }
 });
 
 app.get('/policy', function(req, res) {
   
     //res.setEncoding('utf-8');
     res.writeHead(200, {'Content-Type': 'text/plain; charset=utf8'});
-    res.write("Report2HQ Policy page is under development");
+    res.write("Nigeriaspeaks Policy page is under development");
     res.end();
   
 });
@@ -109,7 +103,7 @@ app.get('/reports', function(req, res) {
     res.render('reports');  
 });
 
-app.get('/auth-hook', function(req, res) {    
+app.get('/auth-hook', function(req, res) {
     res.render('auth-hook',  {layout: __dirname + '/views/layouts/auth.hbs'});
 });
 
@@ -127,7 +121,7 @@ app.post('/auth-hook', function(req, res) {
         }
         
       });
-      var IMAGE_URL = 'https://report2hq.herokuapp.com/images/r2hq.png';
+      var IMAGE_URL = 'https://nigeriaspeaks.herokuapp.com/images/r2hq.png';
       var location = 'https://www.messenger.com/closeWindow/?image_url=' + IMAGE_URL + '&display_text=Returning to Report2HQ Bot';
       res.send(JSON.stringify({ error: false, uid: req.body.uid}));
       //res.send('<div class="row"><div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center>Login successful. Please this window</div></div>');
@@ -1812,7 +1806,7 @@ function promptCurrentReport(senderID) {
         if(!error && res) {
           console.log(res);
           var type = "n/a";
-          var types = ["Traffic", "Fire", "Robbery", "Accident", "Health", "Social Abuse"];
+		  var types = firebase.getTypes();
           if(res.type) {
               type = (res.type && typeof(types[parseInt(res.type) - 1]) != "undefined")? types[parseInt(res.type) - 1]: "n/a";
           }
@@ -1826,7 +1820,7 @@ function promptCurrentReport(senderID) {
           if(res.location && res.location.address) {
             report += ", ADDRESS: " + res.location.address;
           } else {
-            report += ", ADDRESS: n/d";
+            //report += ", ADDRESS: n/d";
           }
           if(res.location && res.location.longitude) {
             report += ", LOCATION - Long: " + res.location.longitude + " Lat: " + res.location.longitude;
@@ -1851,7 +1845,7 @@ function findReport(senderID, nodeID) {
         if(!error && res) {
           //console.log(res);
           var type = "n/a";
-          var types = ["Traffic", "Fire", "Robbery", "Accident", "Health", "Social Abuse"];
+          var types = firebase.getTypes();
           if(res.type) {
               type = (res.type && typeof(types[parseInt(res.type) - 1]) != "undefined")? types[parseInt(res.type) - 1]: "n/a";
           }
@@ -2116,7 +2110,7 @@ function promptReportType(senderID) {
   firebase.setCurrentNodeIndex(senderID, index, function(error, res) {
     getCurrentNode(senderID, function(error, report) {
       var type = "";
-      var types = ["Traffic", "Fire", "Robbery", "Accident", "Health"];
+      var types = firease.getTypes();
       if(!error && report) {
         type = (report.type && typeof(types[parseInt(report.type) - 1]) != "undefined")? "Report type: " + types[parseInt(report.type) - 1]: "";
       }

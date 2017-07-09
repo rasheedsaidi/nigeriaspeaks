@@ -1,7 +1,7 @@
 {
-  "name": "ers",
+  "name": "nigeriaspeaks",
   "version": "1.0.0",
-  "description": "Emergency Reporting System",
+  "description": "Nigeria speaks",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +16,7 @@
     "express": "^4.15.2",
     "express-generator": "^4.15.0",
     "express-handlebars": "^3.0.0",
-    "firebase-admin": "^4.1.3",
+    "firebase-admin": "^4.2.1",
     "https": "^1.0.0",
     "mv": "^2.1.1",
     "request": "^2.81.0"
