@@ -191,7 +191,7 @@ exports.getRecentReportID = function(senderID, callback) {
 			reports.forEach(function(childSnapshot) {
 				var val = childSnapshot.val();
 				var type = "n/a";
-				var types = this.getTypes();
+				var types = getTypes();
 			    if(val.type) {
 			        type = (val.type && typeof(types[parseInt(val.type) - 1]) != "undefined")? types[parseInt(val.type) - 1]: "n/a";
 			    }
