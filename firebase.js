@@ -1,7 +1,7 @@
 var path = require('path');
 var admin = require("firebase-admin");
 
-var serviceAccount = require(path.join(__dirname, 'bin', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json'));
+var serviceAccount = require(path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json'));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -25,7 +25,7 @@ var db = admin.database();
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
-exports.getTypes() {
+exports.getTypes = function() {
 	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Events", "Social Abuse", "Others"];
 	return types;
 }
