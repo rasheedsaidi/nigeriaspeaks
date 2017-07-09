@@ -683,7 +683,7 @@ function processGreeting(senderID, payload) {
         var name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "Welcome to Report2HQ. Please login to start reporting.";
+      var message = greeting + "Welcome to Nigeriaspeaks. Please login to start reporting.";
       promptLogin(senderID, message);
       setTimeout(function() {
         //promptHelpList(senderID);
@@ -697,9 +697,9 @@ function processGreeting(senderID, payload) {
 
 function promptHelpMessage(senderID) {
   //console.log("Timestamp: " + firebase.getTimestamp());
-  var message = "Unsupported input. Please type 'help' for guide or use the menu options.";
-  sendTextMessage(senderID, message);
-  //promptHelpList(senderID);
+  //var message = "Unsupported input. Please type 'help' for guide or use the menu options.";
+  //sendTextMessage(senderID, message);
+  promptHelpList(senderID);
   
 }
 
