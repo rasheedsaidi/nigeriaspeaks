@@ -11,6 +11,10 @@ var app = firebase.initializeApp({
     storageBucket: "nigeriaspeaks-9a7b9.appspot.com",
     messagingSenderId: "1006403479435"
 });
+var config = {
+  projectId: 'nigeriaspeaks-9a7b9',
+  keyFilename: path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json')
+};
 
 var serviceAccount = require(path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json'));
 
@@ -21,7 +25,8 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var storageRef = app.storage();
+//var storageRef = app.storage();
+var storageRef = require('@google-cloud/storage')(config);
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
@@ -321,13 +326,19 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	var ext = g[g.length - 1];
 	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
 	console.log(filename);
-	var storage = storageRef.ref();
-	var mediaRef = storage.child("images/" + filename);
+	//var bucket = storage.bucket('<projectID>.appspot.com');
+	var bucket = storageRef.bucket('images');
+	//var mediaRef = storage.child("images/" + filename);
 	
 	var file = medium.url;
-	mediaRef.put(file).then(function(snapshot) {
-		console.log(snapshot)
-		var downloadURL = snapshot.downloadURL;
+	bucket.upload(filename, function(err, file) {
+	  if (!err) {
+		// "zebra.jpg" is now in your bucket. 
+	  //}
+	//});
+	//mediaRef.put(file).then(function(snapshot) {
+		console.log(file)
+		var downloadURL = file.downloadURL;
 		medium.filePath = downloadURL;
 		var newKey = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
 		//var newKey = newKey1.replace(/-/ig, '');
@@ -343,6 +354,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		} catch(error) {
 			return callback(error, null);
 		}
+	}
 	});
 	
 	
