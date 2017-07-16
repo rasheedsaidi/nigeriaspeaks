@@ -5,10 +5,12 @@ var serviceAccount = require(path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://nigeriaspeaks-9a7b9.firebaseio.com"
+  databaseURL: "https://nigeriaspeaks-9a7b9.firebaseio.com",
+  storageBucket: "https://nigeriaspeaks-9a7b9.appspot.com"
 });
 
 var db = admin.database();
+var storage = admin.storage();
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
