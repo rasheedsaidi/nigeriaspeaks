@@ -1668,7 +1668,7 @@ function promptReportMedia(senderID) {
     return true;
   });
     
-  }, 2000);    
+  }, 2000);
     return;
   });  
 }

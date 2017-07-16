@@ -80,10 +80,34 @@ exports.setStatus = function(senderID, status, callback) {
 exports.submitReport = function(senderID, callback) {
 	//query firebase
 	var reportRef = ref.child(senderID + "/currentNode");
+	
 	try {
-		reportRef.set(null, function(data) {
-			return callback(null, true);
-		})
+		reportRef.once("value", function(data) {
+			var result = data.val();
+			var nodeID = (result && result.nodeID)? result.nodeID: null;
+			if(nodeID) {
+				var newReportRef = ref.child(senderID + "/currentNode/" + nodeID);
+				newReportRef.once("value", function(response) {
+					var res = response.val();
+					if(res) {
+						res.timestamp = admin.database.ServerValue.TIMESTAMP;
+						res.senderID = senderID;
+						var newRef = refMain.child("reports-all");
+						newRef.push(res, function(data) {
+							reportRef.set(null, function(data) {
+								return callback(null, true);
+							})
+						})
+					} else {
+						return callback(error, null);
+					}
+					
+				}				
+			} else {
+				return callback(error, null);
+			}			
+		});
+		
 	} catch(error) {
 		return callback(error, null);
 	}
