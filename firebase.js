@@ -280,7 +280,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		return;
 	}
 	
-	var newKey1 = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
+	var newKey = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
 	//var newKey = newKey1.replace(/-/ig, '');
 	var reportRef = ref.child(senderID + "/user-reports/" + nodeID + "/media/" + newKey);
 	try {

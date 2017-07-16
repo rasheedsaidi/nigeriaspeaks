@@ -934,7 +934,7 @@ function processMenuPostback(senderID, payload) {
   firebase.getStatus(senderID, function(error, response) {
     if(response) {
       switch(payload) {
-        case "report--new": case "report":
+        case "report--new": case "report": case "report-new":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please submit pending report before starting a new one.");
             setTimeout(function() {
@@ -958,7 +958,7 @@ function processMenuPostback(senderID, payload) {
             promptHelpMessage(senderID);
           }
           break;
-        case "report--cancel": case "cancel":
+        case "report--cancel": case "cancel": case "report-cancel":
           if(response.status == 0 || response.status == 1) {
             processReportCancel(senderID);
           } else {
@@ -966,7 +966,7 @@ function processMenuPostback(senderID, payload) {
             sendTextMessage(senderID, "No pending report to cancel");
           }
           break;
-        case "edit": case "report--edit":
+        case "edit": case "report--edit": case "report-edit":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -977,7 +977,7 @@ function processMenuPostback(senderID, payload) {
             sendTextMessage(senderID, "No pending report to edit");
           }
           break;
-        case "report--more":
+        case "report--more": case "report-more":
           if(response.status == 0 || response.status == 1) {
             //sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -987,13 +987,13 @@ function processMenuPostback(senderID, payload) {
             promptHelpMessage(senderID);
           }
           break;
-        case "reports": case "report--find":
+        case "reports": case "report--find": case "report-find":
           promptRecentReports(senderID);          
           break;
         case "help":
           promptHelpList(senderID);          
           break;
-        case "report--submit":
+        case "report--submit": case "report-submit":
           processReportSubmit(senderID);          
           break;
         case "edit--type":
@@ -1027,7 +1027,7 @@ function processMenuPostback(senderID, payload) {
       }
       } else {
         switch(payload) {
-        case "report--new": case "report":
+        case "report--new": case "report": case "report-new":
           processNewReport(senderID);
           break;
         case "status":
@@ -1036,13 +1036,13 @@ function processMenuPostback(senderID, payload) {
         case "skip":
           sendTextMessage(senderID, "No pending report found.");
           break;
-        case "report--cancel": case "cancel":
+        case "report--cancel": case "cancel": case "report-cancel":
           sendTextMessage(senderID, "No pending report to cancel.");
           break;
-        case "edit": case "report--edit":
+        case "edit": case "report--edit": case "report-edit":
           sendTextMessage(senderID, "No pending report to edit");
           break;
-        case "reports": case "report--find":
+        case "reports": case "report--find": case "report-find":
           promptRecentReports(senderID);          
           break;
         case "help":
