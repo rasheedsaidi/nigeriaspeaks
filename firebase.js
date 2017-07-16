@@ -89,11 +89,9 @@ exports.submitReport = function(senderID, callback) {
 				var newReportRef = ref.child(senderID + "/user-reports/" + nodeID);
 				newReportRef.once("value", function(response) {
 					var res = response.val();
-					console.log(res);
 					if(res) {
-						res.timestamp = admin.database.ServerValue.TIMESTAMP;
 						res.senderID = senderID;
-						console.log(res);
+						res.reverseTimestamp = 0 - res.timestamp;
 						var newRef = refMain.child("reports-all");
 						newRef.push(res, function(data) {
 							reportRef.set(null, function(data) {
@@ -331,7 +329,7 @@ exports.newReport = function(senderID, callback) {
 	var newKey = ref.child(senderID + "/user-reports").push().key;
 	//var newKey = newKey1.replace(/-/ig, '');
 	var report = {};
-	report = {type: -1, location: {longitude: null, latitude: null, address: null}, description: "", media: null};
+	report = {type: -1, location: {longitude: null, latitude: null, address: null}, description: "", media: null, timestamp: admin.database.ServerValue.TIMESTAMP;};
 	node = {nodeID: newKey, nodeIndex: 0, status: 0};
 	var reportRef = ref.child(senderID + "/user-reports/"+ newKey);
 	var nodeRef = ref.child(senderID + "/currentNode");
