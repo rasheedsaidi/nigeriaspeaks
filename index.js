@@ -482,7 +482,7 @@ function handleAttachment(senderID, attachment) {
 function handleQuickReply(senderID, payload) {
   console.log("handleQuickReply with payload: " + payload);
   if(payload.indexOf("findReport") != -1) {
-    var parts = payload.split("-");
+    var parts = payload.split("--");
     if(parts[1]) {
       findReport(senderID, parts[1]);
     }
@@ -492,7 +492,7 @@ function handleQuickReply(senderID, payload) {
         if(response) {
           var nodeIndex = parseInt(response.nodeIndex);
           if(nodeIndex == 0) {
-            var parts = payload.split("-");
+            var parts = payload.split("--");
             if(parts[0] && parts[1] && parts[0] == "type") {                      
               processReportType(senderID, parts[1]);
             } else {
@@ -519,7 +519,7 @@ function handlePostback(senderID, payload) {
       if(response) {
         nodeIndex = parseInt(response.nodeIndex);
         if(nodeIndex == 0) {
-          var parts = payload.split("-");
+          var parts = payload.split("--");
           if(parts[0] && parts[1]) {
             if(parts[0] == "type") {                       
               processReportLocation(parts[1]);
@@ -616,13 +616,13 @@ function receivedPostback(event) {
     if (payload === "Greeting") {
       processGreeting(senderID, payload);
       return;
-    } else if(payload == "report-new") {
+    } else if(payload == "report--new") {
       processNewReport(senderID);
       return;
     } else if(payload == "help") {
       promptHelpList(senderID);
       return;
-    } else if(payload == "report-find") {
+    } else if(payload == "report--find") {
       promptRecentReports(senderID);
       return;
     } else {
@@ -807,12 +807,12 @@ function promptHelpList1(senderID) {
 }
 
 function processQuickReplies(senderID, payload) {
-  var parts = payload.split("-");
+  var parts = payload.split("--");
 
   firebase.getStatus(senderID, function(error, response) {
     if(response) {
       switch(payload) {
-        case "report-new":
+        case "report--new":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please submit pending report before starting a new one.");
             setTimeout(function() {
@@ -836,7 +836,7 @@ function processQuickReplies(senderID, payload) {
             promptHelpMessage(senderID);
           }
           break;
-        case "report-cancel":
+        case "report--cancel":
           if(response.status == 0 || response.status == 1) {
             processReportCancel(senderID);
           } else {
@@ -844,7 +844,7 @@ function processQuickReplies(senderID, payload) {
             sendTextMessage(senderID, "No pending report to cancel");
           }
           break;
-        case "edit": case "report-edit":
+        case "edit": case "report--edit":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -855,7 +855,7 @@ function processQuickReplies(senderID, payload) {
             sendTextMessage(senderID, "No pending report to edit");
           }
           break;
-        case "report-more":
+        case "report--more":
           if(response.status == 0 || response.status == 1) {
             //sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -865,36 +865,36 @@ function processQuickReplies(senderID, payload) {
             sendTextMessage(senderID, "No pending report.");
           }
           break;
-        case "reports": case "report-find":
+        case "reports": case "report--find":
           promptRecentReports(senderID);          
           break;
         case "help":
           promptHelpList(senderID);          
           break;
-        case "report-submit":
+        case "report--submit":
           processReportSubmit(senderID);          
           break;
-        case "edit-type":
+        case "edit--type":
           setTimeout(function() {
             promptReportType(senderID);
           }, 1000);
           break;
-        case "edit-location":
+        case "edit--location":
           setTimeout(function() {
             promptReportLocation(senderID);
           }, 1000);
           break;
-        case "edit-address":
+        case "edit--address":
           setTimeout(function() {
             promptReportAddress(senderID);
           }, 1000);
           break;
-        case "edit-description":
+        case "edit--description":
           setTimeout(function() {
             promptReportDescription(senderID);
           }, 1000);
           break;
-        case "edit-media":
+        case "edit--media":
           setTimeout(function() {
             promptReportMedia(senderID);
           }, 1000);
@@ -929,12 +929,12 @@ function skipStep(senderID) {
 }
 
 function processMenuPostback(senderID, payload) {
-  var parts = payload.split("-");
+  var parts = payload.split("--");
 
   firebase.getStatus(senderID, function(error, response) {
     if(response) {
       switch(payload) {
-        case "report-new": case "report":
+        case "report--new": case "report":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please submit pending report before starting a new one.");
             setTimeout(function() {
@@ -958,7 +958,7 @@ function processMenuPostback(senderID, payload) {
             promptHelpMessage(senderID);
           }
           break;
-        case "report-cancel": case "cancel":
+        case "report--cancel": case "cancel":
           if(response.status == 0 || response.status == 1) {
             processReportCancel(senderID);
           } else {
@@ -966,7 +966,7 @@ function processMenuPostback(senderID, payload) {
             sendTextMessage(senderID, "No pending report to cancel");
           }
           break;
-        case "edit": case "report-edit":
+        case "edit": case "report--edit":
           if(response.status == 0 || response.status == 1) {
             sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -977,7 +977,7 @@ function processMenuPostback(senderID, payload) {
             sendTextMessage(senderID, "No pending report to edit");
           }
           break;
-        case "report-more":
+        case "report--more":
           if(response.status == 0 || response.status == 1) {
             //sendTextMessage(senderID, "Please select edit option");
             setTimeout(function() {
@@ -987,36 +987,36 @@ function processMenuPostback(senderID, payload) {
             promptHelpMessage(senderID);
           }
           break;
-        case "reports": case "report-find":
+        case "reports": case "report--find":
           promptRecentReports(senderID);          
           break;
         case "help":
           promptHelpList(senderID);          
           break;
-        case "report-submit":
+        case "report--submit":
           processReportSubmit(senderID);          
           break;
-        case "edit-type":
+        case "edit--type":
           setTimeout(function() {
             promptReportType(senderID);
           }, 1000);
           break;
-        case "edit-location":
+        case "edit--location":
           setTimeout(function() {
             promptReportLocation(senderID);
           }, 1000);
           break;
-        case "edit-address":
+        case "edit--address":
           setTimeout(function() {
             promptReportAddress(senderID);
           }, 1000);
           break;
-        case "edit-description":
+        case "edit--description":
           setTimeout(function() {
             promptReportDescription(senderID);
           }, 1000);
           break;
-        case "edit-media":
+        case "edit--media":
           setTimeout(function() {
             promptReportMedia(senderID);
           }, 1000);
@@ -1027,7 +1027,7 @@ function processMenuPostback(senderID, payload) {
       }
       } else {
         switch(payload) {
-        case "report-new": case "report":
+        case "report--new": case "report":
           processNewReport(senderID);
           break;
         case "status":
@@ -1036,13 +1036,13 @@ function processMenuPostback(senderID, payload) {
         case "skip":
           sendTextMessage(senderID, "No pending report found.");
           break;
-        case "report-cancel": case "cancel":
+        case "report--cancel": case "cancel":
           sendTextMessage(senderID, "No pending report to cancel.");
           break;
-        case "edit": case "report-edit":
+        case "edit": case "report--edit":
           sendTextMessage(senderID, "No pending report to edit");
           break;
-        case "reports": case "report-find":
+        case "reports": case "report--find":
           promptRecentReports(senderID);          
           break;
         case "help":
@@ -1057,7 +1057,7 @@ function processMenuPostback(senderID, payload) {
 }
 
 function processMenuPostback1(senderID, payload) {
-  var parts = payload.split("-");
+  var parts = payload.split("--");
 
   firebase.getStatus(senderID, function(error, response) {
     if(response) {
@@ -1571,19 +1571,19 @@ function promptMoreMedia(senderID) {
       var ar = [{
         "content_type": "text",
         "title": "More media",
-        "payload": "report-more"
+        "payload": "report--more"
     },{
         "content_type": "text",
         "title": "Edit",
-        "payload": "edit-new"
+        "payload": "edit--new"
     },{
         "content_type": "text",
         "title": "Submit",
-        "payload": "report-submit"
+        "payload": "report--submit"
     },{
         "content_type": "text",
         "title": "Cancel report",
-        "payload": "report-cancel"
+        "payload": "report--cancel"
     }];
       var msg = {"recipient": {
       id: senderID
@@ -1678,15 +1678,15 @@ function promptReportSubmit(senderID) {
       var ar = [{
         "content_type": "text",
         "title": "Submit",
-        "payload": "report-submit"
+        "payload": "report--submit"
     },{
         "content_type": "text",
         "title": "Edit",
-        "payload": "report-edit"
+        "payload": "report--edit"
     },{
         "content_type": "text",
         "title": "Cancel report",
-        "payload": "report-cancel"
+        "payload": "report--cancel"
     }];
       var msg = {"recipient": {
       id: senderID
@@ -1932,7 +1932,7 @@ function showRecentReports(senderID, reports) {
     return {
       "content_type": "text",
       "title": type + ": " + desc,
-      "payload": "findReport-" + node.key
+      "payload": "findReport--" + node.key
     }
   });
     var msg = {"recipient": {
@@ -1966,7 +1966,7 @@ function promptReportLocation(senderID) {
       },{
           "content_type": "text",
           "title": "Cancel report",
-          "payload": "report-cancel"
+          "payload": "report--cancel"
       }];
         var msg = {"recipient": {
         id: senderID
@@ -2066,27 +2066,27 @@ function promptEdit(senderID) {
           var ar = [{
             "content_type": "text",
             "title": "Type",
-            "payload": "edit-type"
+            "payload": "edit--type"
         },{
             "content_type": "location",
             "title": "Share Location",
-            "payload": "edit-location"
+            "payload": "edit--location"
         },{
             "content_type": "text",
             "title": "Address",
-            "payload": "edit-address"
+            "payload": "edit--address"
         }, {
             "content_type": "text",
             "title": "Description",
-            "payload": "edit-description"
+            "payload": "edit--description"
         },{
             "content_type": "text",
             "title": "Media",
-            "payload": "edit-media"
+            "payload": "edit--media"
         },{
             "content_type": "text",
             "title": "Cancel report",
-            "payload": "report-cancel"
+            "payload": "report--cancel"
         }];
           var msg = {"recipient": {
           id: senderID
@@ -2117,39 +2117,39 @@ function promptReportType(senderID) {
       var ar = [{
           "content_type": "text",
           "title": "Crime",
-          "payload": "type-1"
+          "payload": "type--1"
       },{
           "content_type": "text",
           "title": "Emergency",
-          "payload": "type-2"
+          "payload": "type--2"
       },{
           "content_type": "text",
           "title": "Public Opinion",
-          "payload": "type-3"
+          "payload": "type--3"
       },{
           "content_type": "text",
           "title": "Public Opinion",
-          "payload": "type-3"
+          "payload": "type--3"
       },{
           "content_type": "text",
           "title": "Accident",
-          "payload": "type-4"
+          "payload": "type--4"
       },{
           "content_type": "text",
           "title": "Event",
-          "payload": "type-5"
+          "payload": "type--5"
       },{
           "content_type": "text",
           "title": "Social Abuse",
-          "payload": "type-6"
+          "payload": "type--6"
       },{
           "content_type": "text",
           "title": "Others",
-          "payload": "type-7"
+          "payload": "type--7"
       },{
           "content_type": "text",
           "title": "Cancel",
-          "payload": "type-cancel"
+          "payload": "type--cancel"
       }];
         var msg = {"recipient": {
         id: senderID
@@ -2224,12 +2224,12 @@ function addPersistentMenu(){
             {
               "title":"New Report",
               "type":"postback",
-              "payload": "report-new"
+              "payload": "report--new"
             },
             {
               "title":"My Reports",
               "type":"postback",
-              "payload": "report-find"
+              "payload": "report--find"
             },
             {
               "type":"web_url",
@@ -2283,12 +2283,12 @@ function setupPersistentMenu() {
         {
           "title":"New Report",
           "type":"postback",
-          "payload": "report-new"
+          "payload": "report--new"
         },
         {
           "title":"My Reports",
           "type":"postback",
-          "payload": "report-find"
+          "payload": "report--find"
         },
         {
           "type":"web_url",
@@ -2308,12 +2308,12 @@ function setupPersistentMenu() {
         {
           "title":"New Report",
           "type":"postback",
-          "payload": "report-new"
+          "payload": "report--new"
         },
         {
           "title":"My Reports",
           "type":"postback",
-          "payload": "report-find"
+          "payload": "report--find"
         },
         {
           "type":"web_url",

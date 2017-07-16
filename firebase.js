@@ -281,7 +281,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	}
 	
 	var newKey1 = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
-	var newKey = newKey1.replace(/-/ig, '');
+	//var newKey = newKey1.replace(/-/ig, '');
 	var reportRef = ref.child(senderID + "/user-reports/" + nodeID + "/media/" + newKey);
 	try {
 		reportRef.set(medium, function(error) {
@@ -302,8 +302,8 @@ exports.newReport = function(senderID, callback) {
 	if(!senderID) {
 		return;
 	}
-	var newKey1 = ref.child(senderID + "/user-reports").push().key;
-	var newKey = newKey1.replace(/-/ig, '');
+	var newKey = ref.child(senderID + "/user-reports").push().key;
+	//var newKey = newKey1.replace(/-/ig, '');
 	var report = {};
 	report = {type: -1, location: {longitude: null, latitude: null, address: null}, description: "", media: null};
 	node = {nodeID: newKey, nodeIndex: 0, status: 0};
