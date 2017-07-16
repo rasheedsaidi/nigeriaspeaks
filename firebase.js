@@ -1,5 +1,16 @@
 var path = require('path');
 var admin = require("firebase-admin");
+var firebase = require("firebase");
+
+
+var app = firebase.initializeApp({ 
+	apiKey: "AIzaSyCVqMEpKLAEGmg8tJLIii0GRlOksQJvXsk",
+    authDomain: "nigeriaspeaks-9a7b9.firebaseapp.com",
+    databaseURL: "https://nigeriaspeaks-9a7b9.firebaseio.com",
+    projectId: "nigeriaspeaks-9a7b9",
+    storageBucket: "nigeriaspeaks-9a7b9.appspot.com",
+    messagingSenderId: "1006403479435"
+});
 
 var serviceAccount = require(path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9-firebase-adminsdk-aoq4s-100255b2dc.json'));
 
@@ -10,7 +21,7 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var storage = admin.storage();
+var storageRef = app.storage();
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
 
@@ -307,10 +318,10 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	}
 	
 	var g = medium.url.split('.');
-	var ext = g[g.length - 1]
+	var ext = g[g.length - 1];
 	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
 	console.log(filename);
-	var storage = admin.storage.ref();
+	var storage = storageRef.ref();
 	var mediaRef = storage.child("images/" + filename);
 	
 	var file = medium.url;
