@@ -84,11 +84,9 @@ exports.submitReport = function(senderID, callback) {
 	try {
 		reportRef.once("value", function(data) {
 			var result = data.val();
-			console.log(result)
 			var nodeID = (result && result.nodeID)? result.nodeID: null;
-			console.log("NodeID: " + nodeID);
 			if(nodeID) {
-				var newReportRef = ref.child(senderID + "/currentNode/" + nodeID);
+				var newReportRef = ref.child(senderID + "/user-reports/" + nodeID);
 				newReportRef.once("value", function(response) {
 					var res = response.val();
 					console.log(res);
