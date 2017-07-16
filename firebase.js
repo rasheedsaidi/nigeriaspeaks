@@ -102,7 +102,7 @@ exports.submitReport = function(senderID, callback) {
 						return callback(error, null);
 					}
 					
-				}				
+				})				
 			} else {
 				return callback(error, null);
 			}			
