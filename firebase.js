@@ -99,12 +99,12 @@ exports.submitReport = function(senderID, callback) {
 							})
 						})
 					} else {
-						return callback(error, null);
+						return callback("Report not found!", null);
 					}
 					
 				})				
 			} else {
-				return callback(error, null);
+				return callback("Error locating nodeID", null);
 			}			
 		});
 		
