@@ -304,20 +304,35 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		return;
 	}
 	
-	var newKey = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
-	//var newKey = newKey1.replace(/-/ig, '');
-	var reportRef = ref.child(senderID + "/user-reports/" + nodeID + "/media/" + newKey);
-	try {
-		reportRef.set(medium, function(error) {
-			if(error) {
-				return callback(null, true);
-			} else {
-				return callback(error, null);
-			}			
-		})	
-	} catch(error) {
-		return callback(error, null);
-	}
+	var g = medium.url.split('.');
+	var ext = g[g.length - 1]
+	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
+	console.log(filename);
+	var storage = admin.storage.ref();
+	var mediaRef = storage.child("images/" + filename);
+	
+	var file = medium.url;
+	mediaRef.put(file).then(function(snapshot) {
+		console.log(snapshot)
+		var downloadURL = snapshot.downloadURL;
+		medium.filePath = downloadURL;
+		var newKey = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
+		//var newKey = newKey1.replace(/-/ig, '');
+		var reportRef = ref.child(senderID + "/user-reports/" + nodeID + "/media/" + newKey);
+		try {
+			reportRef.set(medium, function(error) {
+				if(error) {
+					return callback(null, true);
+				} else {
+					return callback(error, null);
+				}			
+			})	
+		} catch(error) {
+			return callback(error, null);
+		}
+	});
+	
+	
 	
 };
 
