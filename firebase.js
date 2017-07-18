@@ -350,7 +350,7 @@ var downloadFile = function(url, filename, callback) {
 	}
 	download(url, options, function(err){
 		if (err) throw err
-		console.log("meow")
+		console.log("meow");
 		return callback(null, true);
 	});
 }
@@ -366,7 +366,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
 	console.log(filename);
 	var filen = medium.url;
-	downloadFile(filen, filename, function() {
+	downloadFile(filen, filename, function(err, resp) {
 		
 	if (err) {
 		console.log(err);
