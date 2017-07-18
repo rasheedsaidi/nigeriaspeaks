@@ -371,8 +371,8 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		console.log(err);
 		return;
 	}
-	//var bucket = storage.bucket('<projectID>.appspot.com');
-	var bucket = storageRef.bucket('nigeriaspeaks-9a7b9.appspot.com').child("reports-media");
+	//var bucket = storage.bucket('<projectID>.appspot.com'); .child("reports-media")
+	var bucket = storageRef.bucket('nigeriaspeaks-9a7b9.appspot.com/reports-media');
 	//var mediaRef = storage.child("images/" + filename);
 	
 	var url = resp.url;
