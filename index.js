@@ -38,6 +38,8 @@ app.use(session({
   activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds 
 }));
 
+//firebase.sendFile();
+
 
 /*
  * Be sure to setup your config values before running this code. You can 

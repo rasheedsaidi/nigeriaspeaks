@@ -1,6 +1,12 @@
 var path = require('path');
 var admin = require("firebase-admin");
 var firebase = require("firebase");
+var fs = require('fs');
+var url = require('url');
+var http = require('http');
+var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
+var download = require('download-file');
 
 
 var app = firebase.initializeApp({ 
@@ -24,11 +30,16 @@ admin.initializeApp({
   storageBucket: "https://nigeriaspeaks-9a7b9.appspot.com"
 });
 
+var DOWNLOAD_DIR = path.join(__dirname, 'public/downloads');
 var db = admin.database();
 //var storageRef = app.storage();
 var storageRef = require('@google-cloud/storage')(config);
 var ref = db.ref("content/reports");
 var refMain = db.ref("content");
+
+exports.test = function() {
+	download_file_wget(DOWNLOAD_DIR + "/images/ns.png");
+}
 
 var getTypes = function() {
 	var types = ["Crime", "Emergency", "Public Opinion", "Accident", "Event", "Social Abuse", "Others"];
@@ -316,6 +327,34 @@ exports.addTimestamp = function(senderID, nodeID, callback) {
 	
 };
 
+var download_file_wget = function(file_url) {
+
+    // extract the file name
+    var file_name = url.parse(file_url).pathname.split('/').pop();
+    // compose the wget command
+    var wget = 'wget -P ' + DOWNLOAD_DIR + ' ' + file_url;
+    // excute wget using child_process' exec function
+
+    var child = exec(wget, function(err, stdout, stderr) {
+        if (err) throw err;
+        else console.log(file_name + ' downloaded to ' + DOWNLOAD_DIR);
+    });
+};
+
+var downloadFile = function(url, filename, callback) {
+	//var url = "/images/ns.png";
+ 
+	var options = {
+		directory: DOWNLOAD_DIR,
+		filename: filename
+	}
+	download(url, options, function(err){
+		if (err) throw err
+		console.log("meow")
+		return callback(null, true);
+	});
+}
+
 exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	//query firebase
 	if(!medium) {
@@ -326,11 +365,17 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	var ext = g[g.length - 1];
 	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
 	console.log(filename);
+	var filen = medium.url;
+	downloadFile(filen, filename, function() {
+		
+	if (err) {
+		console.log(err);
+		return;
+	}
 	//var bucket = storage.bucket('<projectID>.appspot.com');
 	var bucket = storageRef.bucket('images');
 	//var mediaRef = storage.child("images/" + filename);
-	
-	var filen = medium.url;
+		
 	console.log(filen);
 	bucket.upload(filen, function(err, file) {
 		console.log(err);
@@ -357,6 +402,8 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 			return callback(error, null);
 		}
 	}
+	});
+	
 	});
 	
 	
@@ -390,3 +437,38 @@ exports.newReport = function(senderID, callback) {
 	}
 	
 };
+var download_file_curl = function(file_url) {
+
+    // extract the file name
+    var file_name = url.parse(file_url).pathname.split('/').pop();
+    // create an instance of writable stream
+    var file = fs.createWriteStream(DOWNLOAD_DIR + file_name);
+    // execute curl using child_process' spawn function
+    var curl = spawn('curl', [file_url]);
+    // add a 'data' event listener for the spawn instance
+    curl.stdout.on('data', function(data) { file.write(data); });
+    // add an 'end' event listener to close the writeable stream
+    curl.stdout.on('end', function(data) {
+        file.end();
+        console.log(file_name + ' downloaded to ' + DOWNLOAD_DIR);
+    });
+    // when the spawn child process exits, check if there were any errors and close the writeable stream
+    curl.on('exit', function(code) {
+        if (code != 0) {
+            console.log('Failed: ' + code);
+        }
+    });
+};
+//download_file_curl(DOWNLOAD_DIR + "/images/ns.png");
+exports.sendFile = function() {
+	var url = "/images/ns.png";
+ 
+var options = {
+    directory: DOWNLOAD_DIR,
+    filename: "cat.png"
+}
+download(url, options, function(err){
+    if (err) throw err
+    console.log("meow")
+})
+}
