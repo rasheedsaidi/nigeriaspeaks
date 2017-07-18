@@ -330,8 +330,9 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	var bucket = storageRef.bucket('images');
 	//var mediaRef = storage.child("images/" + filename);
 	
-	var file = medium.url;
-	bucket.upload(filename, function(err, file) {
+	var filen = medium.url;
+	console.log(filen);
+	bucket.upload(filen, function(err, file) {
 		console.log(err);
 	  if (!err) {
 		// "zebra.jpg" is now in your bucket. 
