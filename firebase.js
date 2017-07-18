@@ -351,7 +351,7 @@ var downloadFile = function(url, filename, callback) {
 	download(url, options, function(err){
 		if (err) throw err
 		console.log("meow");
-		return callback(null, true);
+		return callback(null, {{url: url}});
 	});
 }
 
@@ -361,7 +361,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		return;
 	}
 	
-	var g = medium.url.split('.');
+	var g = (medium.url.split('?'))[0].split('.');
 	var ext = g[g.length - 1];
 	var filename = senderID + "-" + (new Date()).getTime() + "." + ext;
 	console.log(filename);
@@ -375,9 +375,10 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	//var bucket = storage.bucket('<projectID>.appspot.com');
 	var bucket = storageRef.bucket('images');
 	//var mediaRef = storage.child("images/" + filename);
-		
-	console.log(filen);
-	bucket.upload(filen, function(err, file) {
+	
+	var url = resp.url;
+	console.log(url);
+	bucket.upload(url, function(err, file) {
 		console.log(err);
 	  if (!err) {
 		// "zebra.jpg" is now in your bucket. 
