@@ -342,7 +342,7 @@ var download_file_wget = function(file_url) {
 };
 
 var downloadFile = function(url, filename, callback) {
-	//var url = "/images/ns.png";
+	var file = path.join(__dirname, 'public/downloads', filename);
  
 	var options = {
 		directory: DOWNLOAD_DIR,
@@ -351,7 +351,7 @@ var downloadFile = function(url, filename, callback) {
 	download(url, options, function(err){
 		if (err) throw err
 		console.log("meow");
-		return callback(null, {url: url});
+		return callback(null, {url: file});
 	});
 }
 
