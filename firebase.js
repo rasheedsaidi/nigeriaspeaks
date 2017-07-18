@@ -332,6 +332,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	
 	var file = medium.url;
 	bucket.upload(filename, function(err, file) {
+		console.log(err);
 	  if (!err) {
 		// "zebra.jpg" is now in your bucket. 
 	  //}
