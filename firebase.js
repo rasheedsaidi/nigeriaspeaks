@@ -351,7 +351,7 @@ var downloadFile = function(url, filename, callback) {
 	download(url, options, function(err){
 		if (err) throw err
 		console.log("meow");
-		return callback(null, {{url: url}});
+		return callback(null, {url: url});
 	});
 }
 
