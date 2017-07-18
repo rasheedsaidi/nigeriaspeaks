@@ -384,7 +384,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	  //}
 	//});
 	//mediaRef.put(file).then(function(snapshot) {
-		console.log(file)
+		//console.log(file)
 		var downloadURL = file.mediaLink;
 		medium.mediaLink = file.mediaLink;
 		medium.baseUrl = file.baseUrl;
