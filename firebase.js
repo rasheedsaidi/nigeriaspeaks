@@ -27,7 +27,6 @@ var serviceAccount = require(path.join(__dirname, 'public', 'nigeriaspeaks-9a7b9
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://nigeriaspeaks-9a7b9.firebaseio.com",
-  storageBucket: "https://nigeriaspeaks-9a7b9.appspot.com"
 });
 
 var DOWNLOAD_DIR = path.join(__dirname, 'public/downloads');
@@ -373,7 +372,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		return;
 	}
 	//var bucket = storage.bucket('<projectID>.appspot.com');
-	var bucket = storageRef.bucket('images');
+	var bucket = storageRef.bucket('nigeriaspeaks-9a7b9.appspot.com');
 	//var mediaRef = storage.child("images/" + filename);
 	
 	var url = resp.url;
