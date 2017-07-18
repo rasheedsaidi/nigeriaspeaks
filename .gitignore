@@ -8,7 +8,7 @@
 # dependencies
 /node_modules
 
-# IDEs and editors
+# IDEs and editors "@google-cloud/storage": "^1.2.0",
 /.idea
 .project
 .classpath
