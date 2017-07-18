@@ -372,7 +372,7 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 		return;
 	}
 	//var bucket = storage.bucket('<projectID>.appspot.com');
-	var bucket = storageRef.bucket('nigeriaspeaks-9a7b9.appspot.com');
+	var bucket = storageRef.bucket('nigeriaspeaks-9a7b9.appspot.com').child("reports-media");
 	//var mediaRef = storage.child("images/" + filename);
 	
 	var url = resp.url;
@@ -385,18 +385,21 @@ exports.addMedia = function(senderID, nodeID, location, medium, callback) {
 	//});
 	//mediaRef.put(file).then(function(snapshot) {
 		console.log(file)
-		var downloadURL = file.downloadURL;
-		medium.filePath = downloadURL;
+		var downloadURL = file.mediaLink;
+		medium.mediaLink = file.mediaLink;
+		medium.baseUrl = file.baseUrl;
+		medium.id = file.id;
 		var newKey = ref.child(senderID + "/user-reports/" + nodeID + "/media").push().key;
 		//var newKey = newKey1.replace(/-/ig, '');
 		var reportRef = ref.child(senderID + "/user-reports/" + nodeID + "/media/" + newKey);
 		try {
+			console.log(reportRef)
 			reportRef.set(medium, function(error) {
 				if(error) {
 					return callback(null, true);
 				} else {
 					return callback(error, null);
-				}			
+				}
 			})	
 		} catch(error) {
 			return callback(error, null);
